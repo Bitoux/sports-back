@@ -1,6 +1,3 @@
-sports-back
-===========
-
 # Server start :
 php bin/console server:run
 

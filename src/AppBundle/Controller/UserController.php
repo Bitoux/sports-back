@@ -36,7 +36,7 @@ class UserController extends BaseController
     }
 
     /**
-     * @Rest\Get("/users/{id}", name="user_detail")
+     * @Rest\Get("/users/{email}/get", name="user_detail")
      * @Rest\View
      * @ApiDoc(
      *     section = "User CRUD",
@@ -49,17 +49,21 @@ class UserController extends BaseController
      *     }
      * )
      */
-    public function getArticle($id)
+    public function getUserByEmail($email)
     {
-        $user = $this->getUserRepository()->find($id);
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByEmail($email);
         if(!$user instanceof User){
             return $this->error->elementNotFound();
-        } else { return $user; }
+        } else {
+            return $user;
+        }
+
 
     }
 
     /**
-     * @Rest\Post("/users/create")
+     * @Rest\Post("/register")
      * @Rest\View(StatusCode = 201)
      * @ParamConverter(
      *     "user",
@@ -98,17 +102,31 @@ class UserController extends BaseController
             throw new ResourceValidationException($message);
         }
 
-        $em = $this->getDoctrine()->getManager();
 
+        $user->setRoles(array('ROLE_READER'));
+        $user->setEnabled(true);
+
+        $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
+
+        $userManager = $this->get('fos_user.user_manager');
+        $user->setPlainPassword($user->getPassword());
+        $userManager->updateUser($user);
 
         return $user;
     }
 
     /**
-     * @Rest\Put("/users/{id}/edit")
-     * @Rest\View
+     * @Rest\Post("/users/edit")
+     * @Rest\View(StatusCode = 201)
+     * @ParamConverter(
+     *     "user",
+     *     converter="fos_rest.request_body",
+     *     options={
+     *         "validator"={ "groups"="Create" }
+     *     }
+     * )
      * @ApiDoc(
      *     section = "User CRUD",
      *     description = "edit a user",
@@ -120,28 +138,34 @@ class UserController extends BaseController
      *     }
      * )
      */
-    public function editUser($id, Request $request)
+    public function editUser(User $user, ConstraintViolationList $violations)
     {
-        $data = json_decode($request->getContent());
-        $user = $this->getUserRepository()->find($id);
-        if (!$user instanceof User) {
-            return $this->error->elementNotFound();
+        if (count($violations)) {
+            $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
+            foreach ($violations as $violation) {
+                $message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
+            }
+
+            throw new ResourceValidationException($message);
         }
 
-        $user->setFirstName($data->first_name);
-        $user->setLastName($data->last_name);
-        $user->setUserName($data->user_name);
-        $user->setPassword($data->password);
-        $user->setEmail($data->email);
-        $user->setAdresse($data->adresse);
-        $user->setCity($data->city);
-        $user->setCountry($data->country);
-        $user->setBirthday($data->birthday);
+        $userManager = $this->get('fos_user.user_manager');
+        $userRes = $this->getDoctrine()->getManager()->find('AppBundle:User', $user->getId());
 
-        $this->getDoctrine()->getManager()->persist($user);
+        $userRes->setFirstName($user->getFirstName());
+       /* $userRes->setLastName($user->getLastName());
+        $userRes->setUserName($user->getUsername());
+        $userRes->setEmail($user->getEmail());
+        $userRes->setAdresse($user->getAdress());
+        $userRes->setCity($user->getCity());
+        $userRes->setCountry($user->getCountry());
+        $userRes->setBirthday($user->getBirthday());
+        $userRes->setPlainPassword($user->getPassword());*/
+
+        $userManager->updateUser($userRes, false);
         $this->getDoctrine()->getManager()->flush();
 
-        return $user;
+        return $userRes;
     }
 
     /**
@@ -158,7 +182,7 @@ class UserController extends BaseController
      *     }
      * )
      */
-    public function deleteArticle($id)
+    public function deleteUser($id)
     {
         $user = $this->getUserRepository()->find($id);
         if (!$user instanceof User) {

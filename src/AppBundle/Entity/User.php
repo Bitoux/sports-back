@@ -2,102 +2,102 @@
 
 namespace AppBundle\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-
-use JMS\Serializer\Annotation\ExclusionPolicy as ExclusionPolicy;
-use JMS\Serializer\Annotation\Expose as Expose;
-
+use FOS\UserBundle\Model\User as BaseUser;
+use FOS\UserBundle\Model\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity()
- * @ORM\Table()
- *
- * @ExclusionPolicy("all")
- *
+ * @ORM\Entity
+
  */
-class User
+class User extends BaseUser
 {
     /**
-     * @ORM\Column(type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @Expose
      */
-    private $id;
+    protected $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Expose
-     * @Assert\NotBlank(groups={"Create"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user"})
      */
-    private $firstName;
+    protected $firstName;
+
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Expose
-     * @Assert\NotBlank(groups={"Create"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user"})
      */
-    private $lastName;
+    protected $lastName;
+
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Expose
-     * @Assert\NotBlank(groups={"Create"})
+     * @Groups({"user"})
      */
-    private $userName;
+    protected $username;
+
 
     /**
-     * @ORM\Column(type="string", length=100)
-     * @Expose
-     * @Assert\NotBlank(groups={"Create"})
+     * @Groups({"user"})
      */
-    private $password;
+    protected $email;
 
     /**
-     * @ORM\Column(type="text")
-     * @Expose
-     * @Assert\NotBlank(groups={"Create"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user"})
      */
-    private $email;
+    protected $fullname;
+
 
     /**
-     * @ORM\Column(type="text")
-     * @Expose
-     * @Assert\NotBlank(groups={"Create"})
+     * @Groups({"user-write"})
      */
-    private $adresse;
+    protected $plainPassword;
+
 
     /**
-     * @ORM\Column(type="text")
-     * @Expose
-     * @Assert\NotBlank(groups={"Create"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user"})
      */
-    private $city;
+    protected $adress;
+
 
     /**
-     * @ORM\Column(type="text")
-     * @Expose
-     * @Assert\NotBlank(groups={"Create"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user"})
      */
-    private $country;
+    protected $city;
 
     /**
-     * @ORM\Column(type="text")
-     * @Expose
-     * @Assert\NotBlank(groups={"Create"})
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user"})
      */
-    private $birthday;
+    protected $country;
 
-    /*  /**
-       * @ORM\ManyToOne(targetEntity="Author", cascade={"all"}, fetch="EAGER")
-       */
-    /* private $author;*/
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user"})
+     */
+    protected $birthday;
 
+    /**
+     * @return mixed
+     */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**
@@ -135,38 +135,6 @@ class User
     /**
      * @return mixed
      */
-    public function getUserName()
-    {
-        return $this->userName;
-    }
-
-    /**
-     * @param mixed $userName
-     */
-    public function setUserName($userName)
-    {
-        $this->userName = $userName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param mixed $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getEmail()
     {
         return $this->email;
@@ -180,20 +148,47 @@ class User
         $this->email = $email;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAdresse()
+    public function setFullname($fullname)
     {
-        return $this->adresse;
+        $this->fullname = $fullname;
+
+        return $this;
+    }
+    public function getFullname()
+    {
+        return $this->fullname;
     }
 
     /**
-     * @param mixed $adresse
+     * @return mixed
      */
-    public function setAdresse($adresse)
+    public function getPlainPassword()
     {
-        $this->adresse = $adresse;
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param mixed $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAdress()
+    {
+        return $this->adress;
+    }
+
+    /**
+     * @param mixed $adress
+     */
+    public function setAdress($adress)
+    {
+        $this->adress = $adress;
     }
 
     /**
@@ -244,5 +239,26 @@ class User
         $this->birthday = $birthday;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
 
+    /**
+     * @param mixed $username
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+
+
+
+    public function isUser(UserInterface $user = null)
+    {
+        return $user instanceof self && $user->id === $this->id;
+    }
 }
