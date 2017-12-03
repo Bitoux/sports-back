@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity
 
  */
-class Filter
+class User_Filter
 {
     /**
      * @ORM\Id
@@ -22,8 +22,12 @@ class Filter
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $designation;
+    protected $id_user;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $id_filter;
 
     /**
      * @return mixed
@@ -44,18 +48,35 @@ class Filter
     /**
      * @return mixed
      */
-    public function getDesignation()
+    public function getIdUser()
     {
-        return $this->designation;
+        return $this->id_user;
     }
 
     /**
-     * @param mixed $designation
+     * @param mixed $id_user
      */
-    public function setDesignation($designation)
+    public function setIdUser($id_user)
     {
-        $this->designation = $designation;
+        $this->id_user = $id_user;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getIdFilter()
+    {
+        return $this->id_filter;
+    }
+
+    /**
+     * @param mixed $id_filter
+     */
+    public function setIdFilter($id_filter)
+    {
+        $this->id_filter = $id_filter;
+    }
+
 
 
 }

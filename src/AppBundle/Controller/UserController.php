@@ -36,7 +36,7 @@ class UserController extends BaseController
     }
 
     /**
-     * @Rest\Get("/users/{email}/get", name="user_detail")
+     * @Rest\Get("/users/{username}/get", name="user_detail")
      * @Rest\View
      * @ApiDoc(
      *     section = "User CRUD",
@@ -49,17 +49,15 @@ class UserController extends BaseController
      *     }
      * )
      */
-    public function getUserByEmail($email)
+    public function getUserByUsername($username)
     {
         $userManager = $this->get('fos_user.user_manager');
-        $user = $userManager->findUserByEmail($email);
+        $user = $userManager->findUserByUsername($username);
         if(!$user instanceof User){
             return $this->error->elementNotFound();
         } else {
             return $user;
         }
-
-
     }
 
     /**
@@ -118,52 +116,29 @@ class UserController extends BaseController
     }
 
     /**
-     * @Rest\Post("/users/edit")
+     * @Rest\Put("/users/edit")
      * @Rest\View(StatusCode = 201)
      * @ParamConverter(
      *     "user",
-     *     converter="fos_rest.request_body",
-     *     options={
-     *         "validator"={ "groups"="Create" }
-     *     }
-     * )
-     * @ApiDoc(
-     *     section = "User CRUD",
-     *     description = "edit a user",
-     *     requirements = {
-     *         { "name"="id", "dataType"="integer", "requirement"="\d+", "description"="ID du dossier" }
-     *     },
-     *     statusCodes = {
-     *         200 = "OK",
-     *     }
+     *     converter="fos_rest.request_body"
      * )
      */
-    public function editUser(User $user, ConstraintViolationList $violations)
-    {
-        if (count($violations)) {
-            $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
-            foreach ($violations as $violation) {
-                $message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
-            }
-
-            throw new ResourceValidationException($message);
-        }
+    public function editUser(User $user)
+   {
 
         $userManager = $this->get('fos_user.user_manager');
-        $userRes = $this->getDoctrine()->getManager()->find('AppBundle:User', $user->getId());
+        $userRes = $userManager->findUserBy(array('id'=>$user->getId()));
 
         $userRes->setFirstName($user->getFirstName());
-       /* $userRes->setLastName($user->getLastName());
+        $userRes->setLastName($user->getLastName());
         $userRes->setUserName($user->getUsername());
         $userRes->setEmail($user->getEmail());
         $userRes->setAdresse($user->getAdress());
         $userRes->setCity($user->getCity());
         $userRes->setCountry($user->getCountry());
         $userRes->setBirthday($user->getBirthday());
-        $userRes->setPlainPassword($user->getPassword());*/
 
-        $userManager->updateUser($userRes, false);
-        $this->getDoctrine()->getManager()->flush();
+        $userManager->updateUser($userRes);
 
         return $userRes;
     }

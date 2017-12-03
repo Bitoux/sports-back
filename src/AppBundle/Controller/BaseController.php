@@ -20,5 +20,16 @@ class BaseController extends FOSRestController
         return $this->getDoctrine()->getRepository('AppBundle:User');
     }
 
+    public function getFilterRepository()
+    {
+        return $this->getDoctrine()->getRepository('AppBundle:Filter');
+    }
+
+    public function getUserFilterRepository()
+    {
+        return $this->getDoctrine()->getRepository('AppBundle:User_Filter');
+    }
+
+
 
 }
