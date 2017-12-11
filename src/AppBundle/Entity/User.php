@@ -85,6 +85,21 @@ class User extends BaseUser
     protected $birthday;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Map", cascade={"all"}, fetch="EAGER")
+     */
+    private $map;
+
+    /**
+     * Many Users have Many Filters.
+     * @ORM\ManyToMany(targetEntity="Filter")
+     * @ORM\JoinTable(name="users_filters",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="filter_id", referencedColumnName="id")}
+     *      )
+     */
+    protected $filters;
+
+    /**
      * @return mixed
      */
     public function getId()
