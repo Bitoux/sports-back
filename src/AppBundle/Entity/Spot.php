@@ -44,6 +44,17 @@ class Spot
      */
     protected $filters;
 
+
+    /**
+     * Many Spots have Many Grades.
+     * @ORM\ManyToMany(targetEntity="Grade")
+     * @ORM\JoinTable(name="spots_grades",
+     *      joinColumns={@ORM\JoinColumn(name="spot_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="grade_id", referencedColumnName="id")}
+     *      )
+     */
+    protected $grades;
+
     /**
      * Many Spots have Many Events.
      * @ORM\ManyToMany(targetEntity="Event")
@@ -54,6 +65,116 @@ class Spot
      */
     protected $events;
 
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * @param mixed $longitude
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * @param mixed $latitude
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFilters()
+    {
+        return $this->filters;
+    }
+
+    /**
+     * @param mixed $filters
+     */
+    public function setFilters($filters)
+    {
+        $this->filters = $filters;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGrades()
+    {
+        return $this->grades;
+    }
+
+    /**
+     * @param mixed $grades
+     */
+    public function setGrades($grades)
+    {
+        $this->grades = $grades;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param mixed $events
+     */
+    public function setEvents($events)
+    {
+        $this->events = $events;
+    }
 
 }

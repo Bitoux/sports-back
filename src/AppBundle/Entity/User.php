@@ -27,19 +27,16 @@ class User extends BaseUser
      */
     protected $firstName;
 
-
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user"})
      */
     protected $lastName;
 
-
     /**
      * @Groups({"user"})
      */
     protected $username;
-
 
     /**
      * @Groups({"user"})
@@ -52,19 +49,16 @@ class User extends BaseUser
      */
     protected $fullname;
 
-
     /**
      * @Groups({"user"})
      */
     protected $plainPassword;
-
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user"})
      */
     protected $adress;
-
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -79,7 +73,7 @@ class User extends BaseUser
     protected $country;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="date", length=255, nullable=true)
      * @Groups({"user"})
      */
     protected $birthday;
@@ -87,7 +81,7 @@ class User extends BaseUser
     /**
      * @ORM\ManyToOne(targetEntity="Map", cascade={"all"}, fetch="EAGER")
      */
-    private $map;
+    protected $map;
 
     /**
      * Many Users have Many Filters.
@@ -98,6 +92,16 @@ class User extends BaseUser
      *      )
      */
     protected $filters;
+
+    /**
+     * Many Users have Many Grades.
+     * @ORM\ManyToMany(targetEntity="Grade")
+     * @ORM\JoinTable(name="users_grades",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="grade_id", referencedColumnName="id")}
+     *      )
+     */
+    protected $grades;
 
     /**
      * @return mixed
@@ -163,31 +167,20 @@ class User extends BaseUser
         $this->email = $email;
     }
 
-    public function setFullname($fullname)
-    {
-        $this->fullname = $fullname;
-
-        return $this;
-    }
+    /**
+     * @return mixed
+     */
     public function getFullname()
     {
         return $this->fullname;
     }
 
     /**
-     * @return mixed
+     * @param mixed $fullname
      */
-    public function getPlainPassword()
+    public function setFullname($fullname)
     {
-        return $this->plainPassword;
-    }
-
-    /**
-     * @param mixed $plainPassword
-     */
-    public function setPlainPassword($plainPassword)
-    {
-        $this->plainPassword = $plainPassword;
+        $this->fullname = $fullname;
     }
 
     /**
@@ -257,6 +250,70 @@ class User extends BaseUser
     /**
      * @return mixed
      */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param mixed $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMap()
+    {
+        return $this->map;
+    }
+
+    /**
+     * @param mixed $map
+     */
+    public function setMap($map)
+    {
+        $this->map = $map;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFilters()
+    {
+        return $this->filters;
+    }
+
+    /**
+     * @param mixed $filters
+     */
+    public function setFilters($filters)
+    {
+        $this->filters = $filters;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGrades()
+    {
+        return $this->grades;
+    }
+
+    /**
+     * @param mixed $grades
+     */
+    public function setGrades($grades)
+    {
+        $this->grades = $grades;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getUsername()
     {
         return $this->username;
@@ -269,7 +326,6 @@ class User extends BaseUser
     {
         $this->username = $username;
     }
-
 
 
     public function isUser(UserInterface $user = null)

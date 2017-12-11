@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity
 
  */
-class User_Filter
+class Grade
 {
     /**
      * @ORM\Id
@@ -22,12 +22,7 @@ class User_Filter
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $id_user;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $id_filter;
+    protected $grade;
 
     /**
      * @return mixed
@@ -48,33 +43,17 @@ class User_Filter
     /**
      * @return mixed
      */
-    public function getIdUser()
+    public function getGrade()
     {
-        return $this->id_user;
+        return $this->grade;
     }
 
     /**
-     * @param mixed $id_user
+     * @param mixed $grade
      */
-    public function setIdUser($id_user)
+    public function setGrade($grade)
     {
-        $this->id_user = $id_user;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getIdFilter()
-    {
-        return $this->id_filter;
-    }
-
-    /**
-     * @param mixed $id_filter
-     */
-    public function setIdFilter($id_filter)
-    {
-        $this->id_filter = $id_filter;
+        $this->grade = $grade;
     }
 
 
