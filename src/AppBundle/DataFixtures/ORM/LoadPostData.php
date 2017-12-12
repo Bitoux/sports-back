@@ -41,11 +41,11 @@ class LoadPostData implements FixtureInterface
         $fakeGrades = array($fakeGrade5, $fakeGrade3, $fakeGrade4);
 
         $fakeUser = new User();
-        $fakeUser->setFirstName('Timothé');
-        $fakeUser->setLastName('Molavy');
-        $fakeUser->setUserName('Timo');
+        $fakeUser->setFirstName('Yann');
+        $fakeUser->setLastName('Miloux');
+        $fakeUser->setUserName('bitoux');
         $fakeUser->setPassword('$2y$13$JOvZdRIR9vAjfcRCD.ReLOnqWE9EG9kVcvQUesN2BTRZVg.hikIba');
-        $fakeUser->setEmail('timo@fake.com');
+        $fakeUser->setEmail('yann@fake.com');
         $fakeUser->setAdress('9 avenue de la République');
         $fakeUser->setCity('Paris');
         $fakeUser->setCountry('France');
