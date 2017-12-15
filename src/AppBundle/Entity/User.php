@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
-
+ *
  */
 class User extends BaseUser
 {
@@ -78,9 +78,14 @@ class User extends BaseUser
      */
     protected $birthday;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Map", cascade={"all"}, fetch="EAGER")
-     */
+		/**
+		 * Many User have Many Map.
+		 * @ORM\ManyToMany(targetEntity="Map")
+		 * @ORM\JoinTable(name="user_maps",
+		 *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+		 *      inverseJoinColumns={@ORM\JoinColumn(name="map_id", referencedColumnName="id", unique=true)}
+		 *      )
+		 */
     protected $map;
 
     /**
