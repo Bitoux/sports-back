@@ -100,7 +100,6 @@ class UserController extends BaseController
             throw new ResourceValidationException($message);
         }
 
-
         $user->setRoles(array('ROLE_READER'));
         $user->setEnabled(true);
 
@@ -116,31 +115,43 @@ class UserController extends BaseController
     }
 
     /**
-     * @Rest\Put("/users/edit")
-     * @Rest\View(StatusCode = 201)
+     * @Rest\Post("/users/edit")
+     * @Rest\View(StatusCode = 200)
      * @ParamConverter(
      *     "user",
-     *     converter="fos_rest.request_body"
+     *     converter="fos_rest.request_body",
+     *     options={
+     *         "validator"={ "groups"="Create" }
+     *     }
      * )
      */
-    public function editUser(User $user)
+    public function editUser(User $user, ConstraintViolationList $violations)
    {
 
-        $userManager = $this->get('fos_user.user_manager');
-        $userRes = $userManager->findUserBy(array('id'=>$user->getId()));
+       if (count($violations)) {
+           $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
+           foreach ($violations as $violation) {
+               $message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
+           }
 
-        $userRes->setFirstName($user->getFirstName());
-        $userRes->setLastName($user->getLastName());
-        $userRes->setUserName($user->getUsername());
-        $userRes->setEmail($user->getEmail());
-        $userRes->setAdresse($user->getAdress());
-        $userRes->setCity($user->getCity());
-        $userRes->setCountry($user->getCountry());
-        $userRes->setBirthday($user->getBirthday());
+           throw new ResourceValidationException($message);
+       }
 
-        $userManager->updateUser($userRes);
+       $userManager = $this->get('fos_user.user_manager');
+       $userRes = $userManager->findUserByUsername($user->getUsername());
+       $userRes->setFirstName($user->getFirstName());
+       $userRes->setLastName($user->getLastName());
+       $userRes->setUserName($user->getUsername());
+       $userRes->setEmail($user->getEmail());
+       $userRes->setAdress($user->getAdress());
+       $userRes->setCity($user->getCity());
+       $userRes->setCountry($user->getCountry());
+       /*$userRes->setBirthday($user->getBirthday());*/
 
-        return $userRes;
+       $userManager->updateUser($userRes, false);
+       $this->getDoctrine()->getManager()->flush();
+
+       return $userRes;
     }
 
     /**
@@ -168,4 +179,5 @@ class UserController extends BaseController
 
         return new JsonResponse (array("status" => 200));
     }
+
 }

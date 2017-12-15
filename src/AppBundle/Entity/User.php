@@ -7,6 +7,7 @@ use FOS\UserBundle\Model\User as BaseUser;
 use FOS\UserBundle\Model\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * @ORM\Entity
@@ -51,6 +52,7 @@ class User extends BaseUser
 
     /**
      * @Groups({"user"})
+     * @Type("FOS\UserBundle\Model\User")
      */
     protected $plainPassword;
 
@@ -107,6 +109,16 @@ class User extends BaseUser
      *      )
      */
     protected $grades;
+
+    /**
+     * @Type("array")
+     */
+    protected $groups;
+
+    /**
+     * @Type("array")
+     */
+    protected $roles;
 
     /**
      * @return mixed
