@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Map;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Filter;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcher;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -100,8 +102,12 @@ class UserController extends BaseController
             throw new ResourceValidationException($message);
         }
 
+        $map = new Map();
+        $map->setName($user->getUsername());
+
         $user->setRoles(array('ROLE_READER'));
         $user->setEnabled(true);
+        $user -> setMap($map);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
@@ -178,6 +184,44 @@ class UserController extends BaseController
         $this->getDoctrine()->getManager()->flush();
 
         return new JsonResponse (array("status" => 200));
+    }
+
+
+    /**
+     * @Rest\Post("/users/{id}/filters")
+     * @Rest\View(StatusCode = 200)
+     * @ParamConverter(
+     *     "user",
+     *     converter="fos_rest.request_body",
+     *     options={
+     *         "validator"={ "groups"="Create" }
+     *     }
+     * )
+     */
+    public function editUserFilters(User $user, ConstraintViolationList $violations)
+    {
+        if (count($violations)) {
+            $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
+            foreach ($violations as $violation) {
+                $message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
+            }
+            throw new ResourceValidationException($message);
+        }
+
+        $userManager = $this->get('fos_user.user_manager');
+        $userRes = $userManager->findUserByUsername($user->getUsername());
+        $filters = array();
+
+        foreach($user->getFilters() as $filter){
+            $tmpFilter = $this->getFilterRepository()->find($filter->getId());
+            array_push($filters, $tmpFilter);
+        }
+        $userRes->setFilters($filters);
+
+        $userManager->updateUser($userRes);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $userRes;
     }
 
 }
