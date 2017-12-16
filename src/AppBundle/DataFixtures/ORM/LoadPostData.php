@@ -55,6 +55,7 @@ class LoadPostData implements FixtureInterface
 
         $fakeMap = new Map();
         $fakeMap->setName("map 1");
+        $fakeMaps = array($fakeMap);
 
         $fakeSpot = new Spot();
         $fakeSpot->setLongitude('48° 52\' 14.84\'\', 2° 19\' 0.8\'\'');
@@ -85,7 +86,7 @@ class LoadPostData implements FixtureInterface
         $manager->persist($fakeMap);
 
         //Création des relations
-        $fakeUser->setMap($fakeMap);
+        $fakeUser->setMap($fakeMaps);
         $fakeUser->setFilters($fakeFilters);
         $fakeUser->setGrades($fakeGrades);
 
