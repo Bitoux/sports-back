@@ -188,16 +188,16 @@ class UserController extends BaseController
 
 
     /**
-     * @Rest\Post("/users/{id}/filters")
-     * @Rest\View(StatusCode = 200)
-     * @ParamConverter(
-     *     "user",
-     *     converter="fos_rest.request_body",
-     *     options={
-     *         "validator"={ "groups"="Create" }
-     *     }
-     * )
-     */
+ * @Rest\Post("/users/{id}/filters")
+ * @Rest\View(StatusCode = 200)
+ * @ParamConverter(
+ *     "user",
+ *     converter="fos_rest.request_body",
+ *     options={
+ *         "validator"={ "groups"="Create" }
+ *     }
+ * )
+ */
     public function editUserFilters(User $user, ConstraintViolationList $violations)
     {
         if (count($violations)) {
