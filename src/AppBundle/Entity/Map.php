@@ -26,7 +26,7 @@ class Map
 
     /**
      * Many Maps have Many Spots.
-     * @ORM\ManyToMany(targetEntity="Spot")
+     * @ORM\ManyToMany(targetEntity="Spot", cascade={"persist"})
      * @ORM\JoinTable(name="map_spots",
      *      joinColumns={@ORM\JoinColumn(name="map_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="spot_id", referencedColumnName="id")}

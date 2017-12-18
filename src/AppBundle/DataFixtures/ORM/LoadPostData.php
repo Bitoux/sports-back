@@ -80,14 +80,14 @@ class LoadPostData implements FixtureInterface
         $manager->persist($fakeGrade3);
         $manager->persist($fakeGrade4);
         $manager->persist($fakeGrade5);
-        $manager->persist($fakeUser);
+       /* $manager->persist($fakeUser);
         $manager->persist($fakeEvent);
         $manager->persist($fakeSpot);
-        $manager->persist($fakeMap);
+        $manager->persist($fakeMap);*/
 
         //Création des relations
-        $fakeUser->setMap($fakeMaps);
-        $fakeUser->setFilters($fakeFilters);
+       /* $fakeUser->setMap($fakeMap);
+        $fakeUer->setFilters($fakeFilters);
         $fakeUser->setGrades($fakeGrades);
 
         $fakeMap->setSpots($fakeSpots);
@@ -96,7 +96,7 @@ class LoadPostData implements FixtureInterface
         $fakeSpot->setEvents($fakeEvents);
         $fakeSpot->setGrades($fakeGrades);
 
-        $fakeEvent->setOwner($fakeUser->getId());
+        $fakeEvent->setOwner($fakeUser->getId());*/
 
         $manager->flush();
     }
