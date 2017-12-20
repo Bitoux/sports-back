@@ -35,28 +35,28 @@ class SpotController extends BaseController
 		return $spots;
 	}
 
-	/**
-	 * @Rest\Get("/spots/{id}/get", name="spot_detail")
-	 * @Rest\View
-	 * @ApiDoc(
-	 *  	section = "Spot CRUD"
-	 *		description = "Get the detail of one spot",
-	 *		requirements = {
-	 *			{ "name"="id", "dataType="integer", "requirement"="\d+", "description"="ID spot" }
-	 *		},
-	 *    statusCodes = {
-	 *   			200 = "OK",
-	 *   	}
-	 * )
-	 */
-	public function getSpotById($spotID){
-		$spot = $this->getSpotRepository()->find($spotID);
-
-		if($spot){
-			return $spot;
-		}
-
-	}
+//	/**
+//	 * @Rest\Get("/spots/{id}/get", name="spot_detail")
+//	 * @Rest\View
+//	 * @ApiDoc(
+//	 *  	section = "Spot CRUD"
+//	 *		description = "Get the detail of one spot",
+//	 *		requirements = {
+//	 *			{ "name"="id", "dataType="integer", "requirement"="\d+", "description"="ID spot" }
+//	 *		},
+//	 *    statusCodes = {
+//	 *   			200 = "OK",
+//	 *   	}
+//	 * )
+//	 */
+//	public function getSpotById($spotID){
+//		$spot = $this->getSpotRepository()->find($spotID);
+//
+//		if($spot){
+//			return $spot;
+//		}
+//
+//	}
 
 	/**
 	 * @Rest\Delete("/spots/{id}/delete")
