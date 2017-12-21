@@ -29,6 +29,11 @@ class Spot
      */
     protected $latitude;
 
+		/**
+		 * @ORM\Column(type="string", length==25, nullable=true)
+		 */
+		protected $address;
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -176,5 +181,21 @@ class Spot
     {
         $this->events = $events;
     }
+
+    /**
+		 * @return string
+		 */
+    public function getAddress(){
+    	return $this->address;
+		}
+
+		/**
+		 * @param string $address
+		 * @return string
+		 */
+		public function setAddress($address){
+			$this->address = $address;
+			return $this->address;
+		}
 
 }
