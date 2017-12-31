@@ -3,8 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
-
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
@@ -76,13 +75,30 @@ class Map
 
     /**
      * @param mixed $spots
+		 * @return mixed
      */
-    public function setSpots($spots)
+    public function addSpot(Spot $spots)
     {
-        $this->spots = $spots;
+        $this->spots[] = $spots;
+
+        return $this;
     }
 
+		/**
+		 * @param mixed $spot
+		 * @return mixed
+		 */
+		public function removeSpot(Spot $spot){
+			$this->spots->removeElement($spot);
 
+			return $this;
+		}
+
+
+    public function __construct()
+		{
+			$this->spots = new ArrayCollection();
+		}
 
 
 }

@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Doctrine\Common\Collections\ArrayCollection;
 
 
 /**
@@ -41,11 +41,8 @@ class Spot
 
     /**
      * Many Spots have Many Filters.
-     * @ORM\ManyToMany(targetEntity="Filter")
-     * @ORM\JoinTable(name="spots_filters",
-     *      joinColumns={@ORM\JoinColumn(name="spot_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="filter_id", referencedColumnName="id")}
-     *      )
+     * @ORM\ManyToMany(targetEntity="Filter", cascade={"persist"})
+     *
      */
     protected $filters;
 
@@ -144,11 +141,24 @@ class Spot
 
     /**
      * @param mixed $filters
+		 * @return mixed
      */
-    public function setFilters($filters)
+    public function addFilter(Filter $filters)
     {
-        $this->filters = $filters;
+        $this->filters[] = $filters;
+
+        return $this;
     }
+
+		/**
+		 * @param mixed $filter
+		 * @return mixed
+		 */
+		public function removeFilter(Filter $filter){
+			$this->filters->removeElement($filter);
+
+			return $this;
+		}
 
     /**
      * @return mixed
@@ -196,6 +206,34 @@ class Spot
 		public function setAddress($address){
 			$this->address = $address;
 			return $this->address;
+		}
+
+		/**
+		 * @param string $address
+		 * @param string $latitude
+		 * @param string $longitude
+		 * @param string $name
+		 * @param mixed $events
+		 * @param mixed $grades
+		 * @param mexied $filters
+		 *
+		 * @return mixed
+		 */
+		public function setSpot($address, $latitude, $longitude, $name, $events, $grades, $filters){
+			$this->address = $address;
+			$this->latitude = $latitude;
+			$this->longitude = $longitude;
+			$this->name = $name;
+			$this->events = $events;
+			$this->grades = $grades;
+			$this->filters = $filters;
+
+			return $this;
+		}
+
+		public function __construct()
+		{
+			$this->filters = new ArrayCollection();
 		}
 
 }
