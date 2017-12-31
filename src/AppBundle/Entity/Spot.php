@@ -59,7 +59,7 @@ class Spot
 
     /**
      * Many Spots have Many Events.
-     * @ORM\ManyToMany(targetEntity="Event")
+     * @ORM\ManyToMany(targetEntity="Event", cascade={"persist"})
      * @ORM\JoinTable(name="spots_events",
      *      joinColumns={@ORM\JoinColumn(name="spot_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id")}
@@ -192,6 +192,13 @@ class Spot
         $this->events = $events;
     }
 
+	/**
+	 * @param mixed $event
+	 */
+		public function addEvent($event){
+			$this->events[] = $event;
+		}
+
     /**
 		 * @return string
 		 */
@@ -215,7 +222,7 @@ class Spot
 		 * @param string $name
 		 * @param mixed $events
 		 * @param mixed $grades
-		 * @param mexied $filters
+		 * @param mixed $filters
 		 *
 		 * @return mixed
 		 */
@@ -234,6 +241,8 @@ class Spot
 		public function __construct()
 		{
 			$this->filters = new ArrayCollection();
+			$this->events = new ArrayCollection();
+			$this->grades = new ArrayCollection();
 		}
 
 }

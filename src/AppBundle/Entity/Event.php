@@ -20,7 +20,7 @@ class Event
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", cascade={"all"}, fetch="EAGER")
+     * @ORM\Column(type="integer", length=255, nullable=true)
      */
     private $owner;
 
@@ -30,7 +30,7 @@ class Event
     protected $name;
 
     /**
-     * @ORM\Column(type="date", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $date;
 

@@ -73,6 +73,13 @@ class Map
         return $this->spots;
     }
 
+	/**
+	 * @param mixed $spots
+	 */
+	public function setSpots($spots){
+		$this->spots = $spots;
+	}
+
     /**
      * @param mixed $spots
 		 * @return mixed

@@ -71,7 +71,7 @@ class SpotController extends BaseController
 	 *   converter="fos_rest.request_body"
 	 * )
 	 */
-	public function addSpotFilters(Spot $spot, ConstraintViolationList $violations, $filter){
+	public function addSpotFilters(Spot $spot, ConstraintViolationList $violations){
 		if(count($violations)){
 			$message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
 			foreach($violations as $violation){
