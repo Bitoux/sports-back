@@ -17,7 +17,7 @@ class SpotController extends BaseController
 
 	/**
 	 * @Rest\Get("/spots", name="spots_list")
-	 * @Rest\View
+	 * @Rest\View(StatusCode = 200)
 	 *
 	 * @ApiDoc(
 	 *  	section = "Spot CRUD",

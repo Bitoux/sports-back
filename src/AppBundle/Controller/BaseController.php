@@ -40,6 +40,10 @@ class BaseController extends FOSRestController
 			return $this->getDoctrine()->getRepository('AppBundle:Spot');
 		}
 
+		public function  getEventRepository(){
+    	return $this->getDoctrine()->getRepository('AppBundle:Event');
+		}
+
 
 
 }
