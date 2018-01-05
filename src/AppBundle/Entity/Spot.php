@@ -58,12 +58,8 @@ class Spot
     protected $grades;
 
     /**
-     * Many Spots have Many Events.
-     * @ORM\ManyToMany(targetEntity="Event", cascade={"persist"})
-     * @ORM\JoinTable(name="spots_events",
-     *      joinColumns={@ORM\JoinColumn(name="spot_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id")}
-     *      )
+     * One Spots have Many Events.
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="spot", cascade={"persist"})
      */
     protected $events;
 
@@ -197,6 +193,7 @@ class Spot
 	 */
 		public function addEvent($event){
 			$this->events[] = $event;
+			$event->setSpot($this);
 		}
 
     /**

@@ -49,6 +49,13 @@ class Event
      */
     protected $nb_user;
 
+		/**
+		 * Many Event have One Spot
+		 * @ORM\ManyToOne(targetEntity="Spot", inversedBy="events")
+		 * @ORM\JoinColumn(name="spot_id", referencedColumnName="id")
+		 */
+		protected $spot;
+
     /**
      * @return mixed
      */
@@ -160,6 +167,39 @@ class Event
     {
         $this->nb_user = $nb_user;
     }
+
+	/**
+	 * @return mixed
+	 */
+    public function getSpot(){
+    	return $this->spot;
+		}
+
+	/**
+	 * @param Spot $spot
+	 * @return $this
+	 */
+		public function setSpot(Spot $spot){
+    	$this->spot = $spot;
+
+    	return $this;
+		}
+
+	/**
+	 * @param $name
+	 * @param $date
+	 * @param $subject
+	 * @param $description
+	 * @return $this
+	 */
+		public function setEvent($name, $date, $subject, $description){
+			$this->name = $name;
+			$this->date = $date;
+			$this->subject = $subject;
+			$this->description = $description;
+
+			return $this;
+		}
 
 
 

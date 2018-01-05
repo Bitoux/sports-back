@@ -18,6 +18,8 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class UserController extends BaseController
 {
+
+
     /**
      * @Rest\Get("/users", name="users_list")
      * @Rest\View
@@ -61,6 +63,30 @@ class UserController extends BaseController
             return $user;
         }
     }
+
+	/**
+	 * @Rest\Get("/users/{id}/id", name="user_detail_id")
+	 * @Rest\View
+	 * @ApiDoc(
+	 *   section="User CRUD",
+	 *   description="Get detail of one user by id",
+	 *   requirements = {
+	 *     { "name"="id", "dataType"="integer", "requirement"="\d+", "description"="ID user" }
+	 *   },
+	 *   statusCodes={
+	 *     200 = "OK"
+	 *	 }
+	 * )
+	 */
+	public function getUserById($id){
+		$userManager = $this->get('fos_user.user_manager');
+		$user = $userManager->findUserBy(array('id'=>$id));
+		if(!$user instanceof User){
+			return $id;
+		} else {
+			return $user;
+		}
+	}
 
     /**
      * @Rest\Post("/register")
