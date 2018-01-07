@@ -192,11 +192,12 @@ class Event
 	 * @param $description
 	 * @return $this
 	 */
-		public function setEvent($name, $date, $subject, $description){
+		public function setEvent($name, $date, $subject, $description, $nb_user){
 			$this->name = $name;
 			$this->date = $date;
 			$this->subject = $subject;
 			$this->description = $description;
+			$this->nb_user = $nb_user;
 
 			return $this;
 		}

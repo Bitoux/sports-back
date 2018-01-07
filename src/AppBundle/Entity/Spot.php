@@ -59,7 +59,7 @@ class Spot
 
     /**
      * One Spots have Many Events.
-     * @ORM\OneToMany(targetEntity="Event", mappedBy="spot", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Event", mappedBy="spot", orphanRemoval=true, cascade={"all"})
      */
     protected $events;
 

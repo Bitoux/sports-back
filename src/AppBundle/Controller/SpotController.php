@@ -75,39 +75,6 @@ class SpotController extends BaseController
 		return $spotRes;
 	}
 
-	/**
-	 * @Rest\Post("/spot/{id}/filters")
-	 * @Rest\View(StatusCode = 200)
-	 * @ParamConverter(
-	 *   "spot",
-	 *   converter="fos_rest.request_body"
-	 * )
-	 */
-	public function addSpotFilters(Spot $spot, ConstraintViolationList $violations){
-		if(count($violations)){
-			$message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
-			foreach($violations as $violation){
-				$message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
-			}
-			throw new ResourceValidationException($message);
-		}
-
-		$spotRes = $this->getSpotRepository()->find($spot->getId());
-
-		$filters = $spot->getFilters();
-
-		foreach($filter as $filters){
-			$filterRes = $this->getFilterRepository()->find($filter->getId());
-			if(!$spotRes->getFilters()->contains($filterRes)){
-				$spotRes->addFilter($filterRes);
-			}
-		}
-
-		$this->getDoctrine()->getManager()->persist($spotRes);
-		$this->getDoctrine()->getManager()->flush();
-
-		return $spotRes;
-	}
 
 	/**
 	 * @Rest\Post("/spot/{id}/edit")
@@ -127,6 +94,12 @@ class SpotController extends BaseController
 		}
 
 		$spotRes = $this->getSpotRepository()->find($spot->getId());
+		$filters = array();
+
+		foreach ($spot->getFilters() as $filter){
+			$tmpFilter = $this->getFilterRepository()->find($filter->getId());
+			array_push($filters, $tmpFilter);
+		}
 
 		$spotRes->setSpot(
 			$spot->getAddress(),
@@ -135,7 +108,7 @@ class SpotController extends BaseController
 			$spot->getName(),
 			$spot->getEvents(),
 			$spot->getGrades(),
-			$spot->getFilters()
+			$filters
 		);
 
 		$this->getDoctrine()->getManager()->persist($spotRes);
@@ -149,18 +122,20 @@ class SpotController extends BaseController
 	 * @Rest\Delete("/spots/{id}/delete")
 	 * @Rest\View
 	 * @ApiDoc(
-	 *  	section = "Spots CRUD",
-	 *	  description = "delete a spot",
+	 *    section = "Spots CRUD",
+	 *    description = "delete a spot",
 	 *    requirements={
-	 *   			{ "name"="id", "dataType"="integer", "requirement"="\d+", "description"="ID du spot" }
+	 *        { "name"="id", "dataType"="integer", "requirement"="\d+", "description"="ID du spot" }
 	 *    },
 	 *   statusCodes={
-	 *   		200 = "OK",
+	 *      200 = "OK",
 	 *   }
 	 * )
+	 * @param $id
+	 * @return JsonResponse
 	 */
-	public function deleteSpot($idSpot){
-		$spot = $this->getSpotRepository()->find($idSpot);
+	public function deleteSpot($id){
+		$spot = $this->getSpotRepository()->find($id);
 		$this->getDoctrine()->getManager()->remove($spot);
 		$this->getDoctrine()->getManager()->flush();
 

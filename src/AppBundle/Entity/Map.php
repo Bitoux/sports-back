@@ -25,10 +25,10 @@ class Map
 
     /**
      * Many Maps have Many Spots.
-     * @ORM\ManyToMany(targetEntity="Spot", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Spot", cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinTable(name="map_spots",
-     *      joinColumns={@ORM\JoinColumn(name="map_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="spot_id", referencedColumnName="id")}
+     *      joinColumns={@ORM\JoinColumn(name="map_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="spot_id", referencedColumnName="id", onDelete="CASCADE")}
      *      )
      */
     protected $spots;

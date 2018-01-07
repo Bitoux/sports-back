@@ -75,7 +75,8 @@ class EventController extends BaseController
 			$event->getName(),
 			$event->getDate(),
 			$event->getSubject(),
-			$event->getDescription()
+			$event->getDescription(),
+			$event->getNbUser()
 		);
 
 		$this->getDoctrine()->getManager()->persist($eventRes);
