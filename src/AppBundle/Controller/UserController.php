@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Map;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Filter;
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcher;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -248,6 +249,52 @@ class UserController extends BaseController
         $this->getDoctrine()->getManager()->flush();
 
         return $userRes;
+    }
+
+    /**
+     * @Rest\Post("/users/{id}/maps")
+     * @Rest\View(StatusCode = 200)
+     * @ParamConverter(
+     *     "user",
+     *     converter="fos_rest.request_body",
+     *     options={
+     *         "validator"={ "groups"="Create" }
+     *     }
+     * )
+     */
+    public function shareMaps(User $user, ConstraintViolationList $violations)
+    {
+        if (count($violations)) {
+            $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
+            foreach ($violations as $violation) {
+                $message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
+            }
+            throw new ResourceValidationException($message);
+        }
+
+        $userManager = $this->get('fos_user.user_manager');
+        $user1 = $userManager->findUserByEmail($user->getUsername());
+        if($user1){
+            $user2 = $userManager->findUserBy(array('id'=>$user->getId()));
+            $map = $user1->getMap();
+            $mapsRes = new ArrayCollection();
+            $mapsRes->add($map);
+
+            foreach($user2->getMaps() as $m){
+                $mapsRes->add($m);
+            }
+
+            $user2->setMaps($mapsRes);
+
+            $userManager->updateUser($user2);
+            $this->getDoctrine()->getManager()->flush();
+
+            return $user2;
+
+        } else {
+            return $user;
+        }
+
     }
 
 }

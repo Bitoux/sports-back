@@ -86,6 +86,17 @@ class User extends BaseUser
     protected $map;
 
     /**
+     * Many Users have Many maps.
+     * @ORM\ManyToMany(targetEntity="Map")
+     * @ORM\JoinTable(name="users_maps",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="map_id", referencedColumnName="id")}
+     *      )
+     */
+    protected $maps;
+
+
+    /**
      * Many Users have Many Filters.
      * @ORM\ManyToMany(targetEntity="Filter")
      * @ORM\JoinTable(name="users_filters",
@@ -337,6 +348,22 @@ class User extends BaseUser
     public function setUsername($username)
     {
         $this->username = $username;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMaps()
+    {
+        return $this->maps;
+    }
+
+    /**
+     * @param mixed $maps
+     */
+    public function setMaps($maps)
+    {
+        $this->maps = $maps;
     }
 
 
