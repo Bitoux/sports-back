@@ -22,8 +22,8 @@ class FilterController extends BaseController
      * @Rest\View
      *
      * @ApiDoc(
-     *     section = "Filter CRUD",
-     *     description = "Get the list of all filters",
+     *     section = "Filter method",
+     *     description = "Get all filters",
      *     statusCodes = {
      *         200 = "OK",
      *     }
@@ -40,8 +40,8 @@ class FilterController extends BaseController
      * @Rest\Post("/filters/create")
      * @Rest\View(StatusCode = 201)
      * @ApiDoc(
-     *     section = "Filter CRUD",
-     *     description = "Create a user in the database",
+     *     section = "Filter method",
+     *     description = "Create user",
      *     requirements = {
      *         { "name"="designation", "dataType"="string", "description"="Nom du filtre" }
      *     },
@@ -73,8 +73,8 @@ class FilterController extends BaseController
      * @Rest\Delete("/filters/{id}/delete")
      * @Rest\View
      * @ApiDoc(
-     *     section = "Filter CRUD",
-     *     description = "delete a filter",
+     *     section = "Filter method",
+     *     description = "delete filter",
      *     requirements = {
      *         { "name"="id", "dataType"="integer", "requirement"="\d+", "description"="ID du filtre" }
      *     },

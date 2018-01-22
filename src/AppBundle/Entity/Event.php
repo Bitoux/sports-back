@@ -49,12 +49,12 @@ class Event
      */
     protected $nb_user;
 
-		/**
-		 * Many Event have One Spot
-		 * @ORM\ManyToOne(targetEntity="Spot", inversedBy="events")
-		 * @ORM\JoinColumn(name="spot_id", referencedColumnName="id")
-		 */
-		protected $spot;
+    /**
+     * Many Event have One Spot
+     * @ORM\ManyToOne(targetEntity="Spot", inversedBy="events")
+     * @ORM\JoinColumn(name="spot_id", referencedColumnName="id")
+     */
+    protected $spot;
 
     /**
      * @return mixed

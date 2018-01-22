@@ -20,8 +20,8 @@ class SpotController extends BaseController
 	 * @Rest\View(StatusCode = 200)
 	 *
 	 * @ApiDoc(
-	 *  	section = "Spot CRUD",
-	 *		description = "Get the list of all spots",
+	 *  	section = "Spot method",
+	 *		description = "Get all spots",
 	 *		statusCodes = {
 	 *   			200 = "OK",
 	 *   }
@@ -42,6 +42,14 @@ class SpotController extends BaseController
 	 *   "spot",
 	 *   converter="fos_rest.request_body"
 	 * )
+     *
+     * @ApiDoc(
+     *   section="Spot method",
+     *   description="Create spot's event",
+     *   statusCodes={
+     *   		200="OK"
+     *	 }
+     * )
 	 */
 	public function addSpotEvent(Spot $spot, ConstraintViolationList $violations){
 		if(count($violations)){
@@ -77,12 +85,24 @@ class SpotController extends BaseController
 
 
 	/**
-	 * @Rest\Post("/spot/{id}/edit")
+	 * @Rest\Put("/spot/{id}/edit")
 	 * @Rest\View(StatusCode = 200)
 	 * @ParamConverter(
 	 *   "spot",
 	 *   converter="fos_rest.request_body"
 	 * )
+     *
+     *  @ApiDoc(
+     *   section="Spot method",
+     *   description="Update spot",
+     *   requirements = {
+     *         { "name"="id", "dataType"="integer", "description"="ID du spot" }
+     *     },
+     *   statusCodes={
+     *   		200="OK"
+     *	 }
+     * )
+     *
 	 */
 	public function updateSpot(Spot $spot, ConstraintViolationList $violations){
 		if (count($violations)) {
@@ -117,13 +137,12 @@ class SpotController extends BaseController
 		return $spotRes;
 	}
 
-
 	/**
 	 * @Rest\Delete("/spots/{id}/delete")
 	 * @Rest\View
 	 * @ApiDoc(
-	 *    section = "Spots CRUD",
-	 *    description = "delete a spot",
+	 *    section = "Spot method",
+	 *    description = "Delete spot",
 	 *    requirements={
 	 *        { "name"="id", "dataType"="integer", "requirement"="\d+", "description"="ID du spot" }
 	 *    },
@@ -142,22 +161,4 @@ class SpotController extends BaseController
 		return new JsonResponse(array("status" => 200));
 	}
 
-	/**
-	 * @Rest\Post("/spots/edit")
-	 * @Rest\View(StatusCode = 200)
-	 * @ParamConverter(
-	 *  	"spot" ,
-	 *   converter="fos_rest.request_body",
-	 * )
-	 */
-	public function editSpot(Spot $spot){
-		$spotUpdate = $this->getSpotRepository()->find($spot->getId());
-
-		$spotUpdate->setLongitude($spot->getLongitude());
-		$spotUpdate->setLatitude($spot->getLatitude());
-		$spotUpdate->setName($spot->getName());
-		$spotUpdate->setFilters($spot->getFilters());
-		$spotUpdate->setGrades($spot->getGrades());
-
-	}
 }

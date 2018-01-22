@@ -17,8 +17,8 @@ class EventController extends BaseController
 	 * @Rest\Get("/events", name="event_list")
 	 * @Rest\View
 	 * @ApiDoc(
-	 *     section = "Filter CRUD",
-	 *     description = "Get the list of all filters",
+	 *     section = "Event method",
+	 *     description = "Get all events",
 	 *     statusCodes = {
 	 *         200 = "OK",
 	 *     }
@@ -34,10 +34,10 @@ class EventController extends BaseController
 	 * @Rest\Delete("/events/{id}/delete")
 	 * @Rest\View
 	 * @ApiDoc(
-	 *   section="Event Crud",
-	 *   description="Delete a event",
+	 *   section="Event method",
+	 *   description="Delete event",
 	 *   requirements = {
-	 *         { "name"="id", "dataType"="integer", "requirement"="\d+", "description"="ID du dossier" }
+	 *         { "name"="id", "dataType"="integer", "description"="ID de l'event" }
 	 *     },
 	 *   statusCodes={
 	 *   		200="OK"
@@ -53,12 +53,23 @@ class EventController extends BaseController
 	}
 
 	/**
-	 * @Rest\Post("/events/{id}/edit")
+	 * @Rest\Put("/events/{id}/edit")
 	 * @Rest\View(StatusCode = 200)
 	 * @ParamConverter(
 	 *   "event",
 	 *   converter="fos_rest.request_body"
 	 * )
+     *
+     * @ApiDoc(
+     *   section="Event method",
+     *   description="Update event",
+     *   requirements = {
+     *         { "name"="id", "dataType"="integer", "description"="ID de l'event" }
+     *     },
+     *   statusCodes={
+     *   		200="OK"
+     *	 }
+     * )
 	 */
 	public function updateEvent(Event $event, ConstraintViolationList $violations){
 		if (count($violations)) {

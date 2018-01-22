@@ -20,14 +20,13 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 class UserController extends BaseController
 {
 
-
     /**
      * @Rest\Get("/users", name="users_list")
      * @Rest\View
      *
      * @ApiDoc(
-     *     section = "User CRUD",
-     *     description = "Get the list of all users",
+     *     section = "User method",
+     *     description = "Get all users",
      *     statusCodes = {
      *         200 = "OK",
      *     }
@@ -43,16 +42,6 @@ class UserController extends BaseController
     /**
      * @Rest\Get("/users/{username}/get", name="user_detail")
      * @Rest\View
-     * @ApiDoc(
-     *     section = "User CRUD",
-     *     description = "Get the detail of one user",
-     *     requirements = {
-     *         { "name"="id", "dataType"="integer", "requirement"="\d+", "description"="ID user" }
-     *     },
-     *     statusCodes = {
-     *         200 = "OK",
-     *     }
-     * )
      */
     public function getUserByUsername($username)
     {
@@ -66,11 +55,11 @@ class UserController extends BaseController
     }
 
 	/**
-	 * @Rest\Get("/users/{id}/id", name="user_detail_id")
+	 * @Rest\Get("/users/{id}/get", name="user_detail_id")
 	 * @Rest\View
 	 * @ApiDoc(
-	 *   section="User CRUD",
-	 *   description="Get detail of one user by id",
+	 *   section="User method",
+	 *   description="Get user by id",
 	 *   requirements = {
 	 *     { "name"="id", "dataType"="integer", "requirement"="\d+", "description"="ID user" }
 	 *   },
@@ -90,7 +79,7 @@ class UserController extends BaseController
 	}
 
     /**
-     * @Rest\Post("/register")
+     * @Rest\Post("/users/create")
      * @Rest\View(StatusCode = 201)
      * @ParamConverter(
      *     "user",
@@ -100,18 +89,12 @@ class UserController extends BaseController
      *     }
      * )
      * @ApiDoc(
-     *     section = "User CRUD",
-     *     description = "Create a user in the database",
+     *     section = "User method",
+     *     description = "Create user in database",
      *     requirements = {
-     *         { "name"="firstName", "dataType"="string", "description"="ID du dossier" },
-     *         { "name"="lastName", "dataType"="string", "description"="ID du dossier" },
-     *         { "name"="userName", "dataType"="string", "description"="ID du dossier" },
-     *         { "name"="password", "dataType"="string", "description"="ID du dossier" },
-     *         { "name"="email", "dataType"="string", "description"="ID du dossier" },
-     *         { "name"="adresse", "dataType"="string", "description"="ID du dossier" },
-     *         { "name"="city", "dataType"="string", "description"="ID du dossier" },
-     *         { "name"="country", "dataType"="string", "description"="ID du dossier" },
-     *         { "name"="birthday", "dataType"="string", "description"="ID du dossier" }
+     *         { "name"="email", "dataType"="string"},
+     *         { "name"="password", "dataType"="string"},
+     *         { "name"="userName", "dataType"="string"}
      *     },
      *     statusCodes = {
      *         201 = "Created",
@@ -148,13 +131,26 @@ class UserController extends BaseController
     }
 
     /**
-     * @Rest\Post("/users/edit")
+     * @Rest\Put("/users/{id}/edit")
      * @Rest\View(StatusCode = 200)
      * @ParamConverter(
      *     "user",
      *     converter="fos_rest.request_body",
      *     options={
      *         "validator"={ "groups"="Create" }
+     *     }
+     * )
+     *
+     *  @ApiDoc(
+     *     section = "User method",
+     *     description = "Update user in database",
+     *     requirements = {
+     *         { "name"="id", "dataType"="string"},
+     *         { "name"="email", "dataType"="string"},
+     *         { "name"="username", "dataType"="string"}
+     *     },
+     *     statusCodes = {
+     *         201 = "Created",
      *     }
      * )
      */
@@ -191,8 +187,8 @@ class UserController extends BaseController
      * @Rest\Delete("/users/{id}/delete")
      * @Rest\View
      * @ApiDoc(
-     *     section = "User CRUD",
-     *     description = "delete a user",
+     *     section = "User method",
+     *     description = "Delete user",
      *     requirements = {
      *         { "name"="id", "dataType"="integer", "requirement"="\d+", "description"="ID du dossier" }
      *     },
@@ -215,16 +211,24 @@ class UserController extends BaseController
 
 
     /**
- * @Rest\Post("/users/{id}/filters")
- * @Rest\View(StatusCode = 200)
- * @ParamConverter(
- *     "user",
- *     converter="fos_rest.request_body",
- *     options={
- *         "validator"={ "groups"="Create" }
- *     }
- * )
- */
+     * @Rest\Post("/users/{id}/filters")
+     * @Rest\View(StatusCode = 200)
+     * @ParamConverter(
+     *     "user",
+     *     converter="fos_rest.request_body",
+     *     options={
+     *         "validator"={ "groups"="Create" }
+     *     }
+     * )
+     *
+     * @ApiDoc(
+     *     section = "User method",
+     *     description = "Update user's filters",
+     *     statusCodes = {
+     *         200 = "OK",
+     *     }
+     * )
+     */
     public function editUserFilters(User $user, ConstraintViolationList $violations)
     {
         if (count($violations)) {
@@ -259,6 +263,14 @@ class UserController extends BaseController
      *     converter="fos_rest.request_body",
      *     options={
      *         "validator"={ "groups"="Create" }
+     *     }
+     * )
+     *
+     * @ApiDoc(
+     *     section = "User method",
+     *     description = "Share user's map",
+     *     statusCodes = {
+     *         200 = "OK",
      *     }
      * )
      */

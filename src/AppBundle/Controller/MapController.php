@@ -26,6 +26,14 @@ class MapController extends BaseController
      *     "map",
      *     converter="fos_rest.request_body"
      * )
+     *
+     * @ApiDoc(
+     *     section = "Map method",
+     *     description = "Create map's spot",
+     *     statusCodes = {
+     *         201 = "Created",
+     *     }
+     * )
      */
     public function addUserSpots(Map $map, ConstraintViolationList $violations)
     {
