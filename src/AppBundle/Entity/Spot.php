@@ -60,6 +60,9 @@ class Spot
     /**
      * One Spots have Many Events.
      * @ORM\OneToMany(targetEntity="Event", mappedBy="spot", orphanRemoval=true, cascade={"all"})
+		 * @ORM\JoinColumns({
+		 *   @ORM\JoinColumn(name="spot_id", referencedColumnName="id", onDelete="CASCADE")
+		 *	 })
      */
     protected $events;
 
@@ -231,13 +234,12 @@ class Spot
 		 *
 		 * @return mixed
 		 */
-		public function setSpot($address, $latitude, $longitude, $name, $events, $grades, $filters){
+		public function setSpot($address, $latitude, $longitude, $name, $events, $filters){
 			$this->address = $address;
 			$this->latitude = $latitude;
 			$this->longitude = $longitude;
 			$this->name = $name;
 			$this->events = $events;
-			$this->grades = $grades;
 			$this->filters = $filters;
 
 			return $this;

@@ -95,4 +95,49 @@ class EventController extends BaseController
 
 		return $eventRes;
 	}
+
+	/**
+	 * @Rest\Post("/events/{id}/create")
+	 * @Rest\View(StatusCode = 200)
+	 * @ParamConverter(
+	 *   "event",
+	 *   converter="fos_rest.request_body"
+	 * )
+	 *
+	 * @ApiDoc(
+	 *   section="Event method",
+	 *   description="Create event",
+	 *   requirements = {
+	 *         { "name"="id", "dataType"="integer", "description"="ID de l'event" }
+	 *     },
+	 *   statusCodes={
+	 *   		201 = "Created",
+	 *	 }
+	 * )
+	 */
+	public function addEvent(Event $event, ConstraintViolationList $violations){
+		if (count($violations)) {
+			$message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
+			foreach ($violations as $violation) {
+				$message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
+			}
+			throw new ResourceValidationException($message);
+		}
+
+		$newEvent = new Event();
+		$newEvent->setName($event->getName());
+		$newEvent->setDate($event->getDate());
+		$newEvent->setSubject($event->getSubject());
+		$newEvent->setNbUser($event->getNbUser());
+		$newEvent->setDescription($event->getDescription());
+		$newEvent->setOwner($event->getOwner());
+
+		$spotRes = $this->getSpotRepository()->find($event->getSpot()->getId());
+		$spotRes->addEvent($newEvent);
+
+		$this->getDoctrine()->getManager()->persist($newEvent);
+		$this->getDoctrine()->getManager()->flush();
+
+		return $newEvent;
+	}
 }

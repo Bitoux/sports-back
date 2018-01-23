@@ -70,7 +70,7 @@ class SpotController extends BaseController
 				$tmpEvent = $this->getEventRepository()->find($event->getId());
 				array_push($events, $tmpEvent);
 			}else{
-                $event->setSpot($spotRes);
+        $event->setSpot($spotRes);
 				array_push($events, $event);
 			}
 		}
@@ -129,7 +129,6 @@ class SpotController extends BaseController
 			$spot->getLongitude(),
 			$spot->getName(),
 			$spot->getEvents(),
-			$spot->getGrades(),
 			$filters
 		);
 
