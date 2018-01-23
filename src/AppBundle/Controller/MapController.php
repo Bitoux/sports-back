@@ -49,9 +49,14 @@ class MapController extends BaseController
 
         $spots = array();
 
-        foreach($mapRes->getSpots() as $spot){
-            $tmpSpot = $this->getSpotRepository()->find($spot->getId());
-            array_push($spots, $tmpSpot);
+        foreach($map->getSpots() as $spot){
+            if($spot->getId() !== null){
+                $tmpSpot = $this->getSpotRepository()->find($spot->getId());
+                array_push($spots, $tmpSpot);
+            } else {
+                array_push($spots, $spot);
+            }
+
         }
 
         $mapRes->setSpots($spots);
