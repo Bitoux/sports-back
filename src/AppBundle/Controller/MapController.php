@@ -47,7 +47,14 @@ class MapController extends BaseController
 
         $mapRes = $this->getMapRepository()->find($map->getId());
 
-        $mapRes->setSpots($map->getSpots());
+        $spots = array();
+
+        foreach($mapRes->getSpots() as $spot){
+            $tmpSpot = $this->getSpotRepository()->find($spot->getId());
+            array_push($spots, $tmpSpot);
+        }
+
+        $mapRes->setSpots($spots);
 
         $this->getDoctrine()->getManager()->persist($mapRes);
         $this->getDoctrine()->getManager()->flush();

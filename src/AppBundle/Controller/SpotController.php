@@ -65,14 +65,16 @@ class SpotController extends BaseController
 		$events = array();
 
 		foreach($spot->getEvents() as $event){
+
 			if($event->getId()){
 				$tmpEvent = $this->getEventRepository()->find($event->getId());
 				array_push($events, $tmpEvent);
 			}else{
-				$event->setSpot($spotRes);
+                $event->setSpot($spotRes);
 				array_push($events, $event);
 			}
 		}
+
 		$spotRes->setEvents($events);
 
 		$this->getDoctrine()->getManager()->persist($event);

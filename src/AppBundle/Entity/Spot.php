@@ -146,15 +146,23 @@ class Spot
         return $this;
     }
 
-		/**
-		 * @param mixed $filter
-		 * @return mixed
-		 */
-		public function removeFilter(Filter $filter){
-			$this->filters->removeElement($filter);
+    /**
+     * @param mixed $filters
+     */
+    public function setFilters($filters)
+    {
+        $this->filters = $filters;
+    }
 
-			return $this;
-		}
+    /**
+     * @param mixed $filter
+     * @return mixed
+     */
+    public function removeFilter(Filter $filter){
+        $this->filters->removeElement($filter);
+
+        return $this;
+    }
 
     /**
      * @return mixed

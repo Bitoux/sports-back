@@ -10,13 +10,29 @@ use AppBundle\Entity\Spot;
 use AppBundle\Entity\User;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
 
-class LoadPostData implements FixtureInterface
+
+class LoadPostData implements FixtureInterface, ContainerAwareInterface
 {
+
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
     public function load(ObjectManager $manager)
     {
+        $managerFos = $this->container->get('fos_user.user_manager');
+
         //Initialisation de la base
         $basketFilter = new Filter();
         $basketFilter->setDesignation('Basket-ball');
@@ -40,7 +56,7 @@ class LoadPostData implements FixtureInterface
         $fakeGrade5->setGrade(5);
         $fakeGrades = array($fakeGrade5, $fakeGrade3, $fakeGrade4);
 
-        $fakeUser = new User();
+        $fakeUser = $managerFos->createUser();
         $fakeUser->setFirstName('Jean');
         $fakeUser->setLastName('Moulin');
         $fakeUser->setUserName('JMoulin');
@@ -49,7 +65,6 @@ class LoadPostData implements FixtureInterface
         $fakeUser->setAdress('9 avenue de la République');
         $fakeUser->setCity('Paris');
         $fakeUser->setCountry('France');
-       /* $fakeUser->setBirthday('15/04/1993');*/
         $fakeUser->setRoles(array('ROLE_READER'));
         $fakeUser->setEnabled(true);
 
@@ -58,17 +73,18 @@ class LoadPostData implements FixtureInterface
         $fakeMaps = array($fakeMap);
 
         $fakeSpot = new Spot();
-        $fakeSpot->setLongitude('48° 52\' 14.84\'\', 2° 19\' 0.8\'\'');
-        $fakeSpot->setLatitude('48.87079, 2.31689');
-        $fakeSpot->setName('spot 1');
+        $fakeSpot->setLongitude('2.3705932');
+        $fakeSpot->setLatitude('48.8300412');
+        $fakeSpot->setAddress('9 Rue Dunois, 75013 Paris, France');
+        $fakeSpot->setName('Exemple');
         $fakeSpots = array($fakeSpot);
 
         $fakeEvent = new Event();
-        $fakeEvent->setName('Match 1');
-        /*$fakeEvent->setDate('15-04-2018');*/
-        $fakeEvent->setSubject('Premier match de la saison !');
-        $fakeEvent->setDescription('Ramenez tous vos short, ca va être une aprem....');
-        $fakeEvent->setNbUser(15);
+        $fakeEvent->setName('Aprem 4vs4');
+        $fakeEvent->setDate('2018-01-25');
+        $fakeEvent->setSubject('4vs4 de Basket !');
+        $fakeEvent->setDescription('Bonjour ! j\'aimerai faire un basket Jeudi 25 Janvier et je cherche du monde ! ');
+        $fakeEvent->setNbUser(8);
         $fakeEvents = array($fakeEvent);
 
         $manager->persist($basketFilter);
@@ -80,23 +96,23 @@ class LoadPostData implements FixtureInterface
         $manager->persist($fakeGrade3);
         $manager->persist($fakeGrade4);
         $manager->persist($fakeGrade5);
-       /* $manager->persist($fakeUser);
+        $managerFos->updateUser($fakeUser);
         $manager->persist($fakeEvent);
         $manager->persist($fakeSpot);
-        $manager->persist($fakeMap);*/
+        $manager->persist($fakeMap);
 
         //Création des relations
-       /* $fakeUser->setMap($fakeMap);
-        $fakeUer->setFilters($fakeFilters);
+        $fakeUser->setMap($fakeMap);
+        $fakeUser->setFilters($fakeFilters);
         $fakeUser->setGrades($fakeGrades);
 
         $fakeMap->setSpots($fakeSpots);
 
         $fakeSpot->setFilters($fakeFilters);
-        $fakeSpot->setEvents($fakeEvents);
         $fakeSpot->setGrades($fakeGrades);
 
-        $fakeEvent->setOwner($fakeUser->getId());*/
+        $fakeEvent->setOwner($fakeUser->getId());
+        $fakeEvent->setSpot($fakeSpot);
 
         $manager->flush();
     }
