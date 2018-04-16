@@ -105,7 +105,7 @@ fos_user:
 nelmio_cors:
     paths:
         '^/':
-            allow_origin: ['http://localhost:8100']
+            allow_origin: ['https://sportback.herokuapp.com:8100']
             allow_headers: ['origin', 'content-type', 'authorization']
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
             max_age: 3600
