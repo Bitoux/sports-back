@@ -15,3 +15,6 @@ bin/console doctrine:fixtures:load
 
 # Deployer sur Heroku
 git push heroku master
+
+# Effectuer commande php sur heroku
+heroku run php bin/console doctrine:schema:update
