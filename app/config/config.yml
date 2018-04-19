@@ -90,10 +90,10 @@ fos_rest:
            { AppBundle\Exception\ResourceValidationException: 400, \Exception: 500 }
 
 lexik_jwt_authentication:
-    private_key_path: '%kernel.root_dir%/../var/jwt/private.pem'
-    public_key_path:  '%kernel.root_dir%/../var/jwt/public.pem'
-    pass_phrase:      'azerty'
-    token_ttl:        3600
+    private_key_path: '%kernel.root_dir%/../var/jwt/private.pem' 
+    public_key_path:  '%kernel.root_dir%/../var/jwt/public.pem' 
+    pass_phrase:      'azerty' 
+    token_ttl:        3600 
 
 fos_user:
     db_driver: orm
