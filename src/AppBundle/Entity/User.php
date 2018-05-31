@@ -56,6 +56,29 @@ class User extends BaseUser
      */
     protected $plainPassword;
 
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"user"})
+     */
+    protected $fbLogin;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user"})
+     */
+    protected $picture;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user"})
+     */
+    protected $gender;
+
+    /**
+     * 
+     */
+
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user"})
