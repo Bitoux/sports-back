@@ -68,11 +68,11 @@ class UserController extends BaseController
 	 *	 }
 	 * )
 	 */
-	public function getUserById($id){
+	public function getUserById($idUser){
 		$userManager = $this->get('fos_user.user_manager');
-		$user = $userManager->findUserBy(array('id'=>$id));
+		$user = $userManager->findUserBy(array('id'=>$idUser));
 		if(!$user instanceof User){
-			return $id;
+			return $idUser;
 		} else {
 			return $user;
 		}
@@ -119,9 +119,9 @@ class UserController extends BaseController
         $user->setEnabled(true);
         $user -> setMap($map);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
 
         $userManager = $this->get('fos_user.user_manager');
         $user->setPlainPassword($user->getPassword());
@@ -197,9 +197,9 @@ class UserController extends BaseController
      *     }
      * )
      */
-    public function deleteUser($id)
+    public function deleteUser($idUser)
     {
-        $user = $this->getUserRepository()->find($id);
+        $user = $this->getUserRepository()->find($idUser);
         if (!$user instanceof User) {
             return $this->error->elementNotFound();
         }

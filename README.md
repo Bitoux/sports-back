@@ -12,3 +12,6 @@ bin/console do:sc:cr
 
 # Générations des fixtures
 bin/console doctrine:fixtures:load
+
+# Deployer sur Heroku
+git push heroku master
