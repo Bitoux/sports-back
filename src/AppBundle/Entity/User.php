@@ -140,6 +140,14 @@ class User extends BaseUser
     protected $grades;
 
     /**
+     * Many Users have Many Friend.
+     * @ORM\ManyToMany(targetEntity="Friend", inversedBy="users")
+     * @ORM\JoinTable(name="friends")
+     * @Groups({"user"})
+     */
+    protected $friends;
+
+    /**
      * @Type("array")
      */
     protected $groups;
@@ -389,9 +397,27 @@ class User extends BaseUser
         $this->maps = $maps;
     }
 
+    /**
+     * @return Friend
+     */
+    public function getFriends(){
+        return $this->friends;
+    }
+
+    /**
+     * @param Friend
+     */
+    public function setFriends($friends){
+        $this->friends = $friends;
+    }
+
 
     public function isUser(UserInterface $user = null)
     {
         return $user instanceof self && $user->id === $this->id;
+    }
+
+    public function __construct(){
+        $this->friends = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }
