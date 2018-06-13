@@ -19,14 +19,6 @@ class SpotController extends BaseController
 	 * @Rest\Get("/spots", name="spots_list")
 	 * @Rest\View(StatusCode = 200)
 	 *
-	 * @ApiDoc(
-	 *  	section = "Spot method",
-	 *		description = "Get all spots",
-	 *		statusCodes = {
-	 *   			200 = "OK",
-	 *   }
-	 * )
-	 *
 	 */
 	public function getSpots()
 	{
@@ -42,14 +34,6 @@ class SpotController extends BaseController
 	 *   "spot",
 	 *   converter="fos_rest.request_body"
 	 * )
-     *
-     * @ApiDoc(
-     *   section="Spot method",
-     *   description="Create spot's event",
-     *   statusCodes={
-     *   		200="OK"
-     *	 }
-     * )
 	 */
 	public function addSpotEvent(Spot $spot, ConstraintViolationList $violations){
 		if(count($violations)){
@@ -93,18 +77,6 @@ class SpotController extends BaseController
 	 *   "spot",
 	 *   converter="fos_rest.request_body"
 	 * )
-     *
-     *  @ApiDoc(
-     *   section="Spot method",
-     *   description="Update spot",
-     *   requirements = {
-     *         { "name"="id", "dataType"="integer", "description"="ID du spot" }
-     *     },
-     *   statusCodes={
-     *   		200="OK"
-     *	 }
-     * )
-     *
 	 */
 	public function updateSpot(Spot $spot, ConstraintViolationList $violations){
 		if (count($violations)) {
@@ -141,16 +113,6 @@ class SpotController extends BaseController
 	/**
 	 * @Rest\Delete("/spots/{id}/delete")
 	 * @Rest\View
-	 * @ApiDoc(
-	 *    section = "Spot method",
-	 *    description = "Delete spot",
-	 *    requirements={
-	 *        { "name"="id", "dataType"="integer", "requirement"="\d+", "description"="ID du spot" }
-	 *    },
-	 *   statusCodes={
-	 *      200 = "OK",
-	 *   }
-	 * )
 	 * @param $id
 	 * @return JsonResponse
 	 */

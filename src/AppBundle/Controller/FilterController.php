@@ -20,14 +20,6 @@ class FilterController extends BaseController
     /**
      * @Rest\Get("/filters", name="filter_list")
      * @Rest\View
-     *
-     * @ApiDoc(
-     *     section = "Filter method",
-     *     description = "Get all filters",
-     *     statusCodes = {
-     *         200 = "OK",
-     *     }
-     * )
      */
     public function getFilters()
     {
@@ -39,16 +31,6 @@ class FilterController extends BaseController
     /**
      * @Rest\Post("/filters/create")
      * @Rest\View(StatusCode = 201)
-     * @ApiDoc(
-     *     section = "Filter method",
-     *     description = "Create user",
-     *     requirements = {
-     *         { "name"="designation", "dataType"="string", "description"="Nom du filtre" }
-     *     },
-     *     statusCodes = {
-     *         201 = "Created",
-     *     }
-     * )
      */
     public function createUser(Filter $filter, ConstraintViolationList $violations)
     {
@@ -72,16 +54,6 @@ class FilterController extends BaseController
     /**
      * @Rest\Delete("/filters/{id}/delete")
      * @Rest\View
-     * @ApiDoc(
-     *     section = "Filter method",
-     *     description = "delete filter",
-     *     requirements = {
-     *         { "name"="id", "dataType"="integer", "requirement"="\d+", "description"="ID du filtre" }
-     *     },
-     *     statusCodes = {
-     *         200 = "OK",
-     *     }
-     * )
      */
     public function deleteFilter($id)
     {
