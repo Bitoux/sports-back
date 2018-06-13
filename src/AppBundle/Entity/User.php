@@ -76,7 +76,7 @@ class User extends BaseUser
     protected $gender;
 
     /**
-     * 
+     *
      */
 
     /**
@@ -409,6 +409,20 @@ class User extends BaseUser
      */
     public function setFriends($friends){
         $this->friends = $friends;
+    }
+  
+    /**
+     * @return bool
+     */
+    public function getFbLogin(){
+      return $this->fbLogin;
+    }
+  
+  /**
+   * @param boolean
+   */
+    public function setFbLogin($fbLogin){
+      $this->fbLogin = $fbLogin;
     }
 
 

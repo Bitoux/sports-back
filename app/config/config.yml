@@ -112,9 +112,56 @@ nelmio_cors:
             max_age: 3600
 
 easy_admin:
+    design:
+      brand_color: '#1ABC9C'
+      menu:
+        - { entity: 'Spot', icon: 'map-marker' }
+        - { entity: 'Event', icon: 'calendar' }
+        - { entity: 'Map', icon: 'map' }
+        - { entity: 'User', icon: 'user' }
     entities:
         # change the following to the namespaces of your own entities
-        - AppBundle\Entity\Map
-        - AppBundle\Entity\Spot
-        - AppBundle\Entity\User
-        - AppBundle\Entity\Event
+        Spot:
+          class: AppBundle\Entity\Spot
+          label: 'Spots'
+          list:
+            title: 'All spots'
+          new:
+            title: 'Add a spot'
+            form_options: { validation_groups: ['Default'] }
+          edit:
+            title: 'Edit spot'
+            form_options: { validation_groups: ['Default'] }
+          fields:
+           - longitude
+           - latitude
+           - address
+           - name
+          form:
+           - longitude
+           - latitude
+           - address
+           - name
+        Event:
+          class: AppBundle\Entity\Event
+          label: 'Events'
+          list:
+            title: 'All events'
+        Map:
+          class: AppBundle\Entity\Map
+          label: 'Maps'
+          list:
+            title: 'All maps'
+        User:
+          class: AppBundle\Entity\User
+          label: 'Users'
+          list:
+            title: 'All users'
+          form:
+            - username
+            - email
+            - roles
+            - gender
+            - city
+            - country
+            - birthdate
