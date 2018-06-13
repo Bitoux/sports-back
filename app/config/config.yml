@@ -72,8 +72,6 @@ sensio_framework_extra:
     request: { converters: true }
 
 fos_rest:
-    zone:
-        - { path: ^/api/* }
     body_converter:
         enabled: true
         validate: true
@@ -118,3 +116,5 @@ easy_admin:
         # change the following to the namespaces of your own entities
         - AppBundle\Entity\Map
         - AppBundle\Entity\Spot
+        - AppBundle\Entity\User
+        - AppBundle\Entity\Event
