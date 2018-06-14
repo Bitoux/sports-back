@@ -7,8 +7,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
- * @ORM\Entity
- * 
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\FriendRepository")
  */
 class Friend
 {
@@ -21,7 +20,7 @@ class Friend
 
     /**
      * Many Groups have Many Users.
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="friends")
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="friends", orphanRemoval=true, cascade={"all"})
      */
     protected $users;
 
@@ -76,9 +75,10 @@ class Friend
      * @param User
      */
     public function addUser($user){
-        $this->users->add($user);
+        $user->addFriend($this);
+        $this->users[] = $user;
+        
     }
-
 
     public function __contruct(){
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();

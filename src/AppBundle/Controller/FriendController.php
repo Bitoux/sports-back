@@ -31,18 +31,24 @@ class FriendController extends BaseController{
 
         $em = $this->getDoctrine()->getManager();
 
-        $friendRepository = new FriendRepository($em, Friend::class);
+        $checkFriend = $this->getDoctrine()->getRepository(Friend::class)
+        ->checkUsers($friend->getUsers());
 
-        if($friendRepository->checkUsers($friend->getUsers())){
+        if($checkFriend){
             return 'Already in friend';
         }else{
             $newFriend = new Friend();
-            $newFriend->setStatus($friend->getStatus);
+            $newFriend->setStatus($friend->getStatus());
+
             foreach($friend->getUsers() as $user){
-                $newFriend->addUser($user);
+                $userToAdd = $this->getUserRepository()->find($user->getId());
+                $newFriend->addUser($userToAdd);
+                
+                // TODU -> PTT CHECK SI FRIEND EXISTE
             }
 
-            $em->persist($friend);
+            // TODO -> merge enregistre pas dans la jointure
+            $em->merge($friend);
             $em->flush();
 
             return $friend;

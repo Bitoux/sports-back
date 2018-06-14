@@ -141,8 +141,11 @@ class User extends BaseUser
 
     /**
      * Many Users have Many Friend.
-     * @ORM\ManyToMany(targetEntity="Friend", inversedBy="users")
-     * @ORM\JoinTable(name="friends")
+     * @ORM\ManyToMany(targetEntity="Friend", inversedBy="users", cascade={"all"})
+     * @ORM\JoinTable(name="user_friends",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="friend_id", referencedColumnName="id")}
+     *      )
      * @Groups({"user"})
      */
     protected $friends;
@@ -423,6 +426,13 @@ class User extends BaseUser
    */
     public function setFbLogin($fbLogin){
       $this->fbLogin = $fbLogin;
+    }
+
+    /**
+     * @param Friend $friend
+     */
+    public function addFriend($friend){
+        $this->friends[] = $friend;
     }
 
 

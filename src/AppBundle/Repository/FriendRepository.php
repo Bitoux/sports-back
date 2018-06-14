@@ -13,7 +13,7 @@ class FriendRepository extends EntityRepository{
                       ->addSelect('c');
  
         $query = $query->add('where', $query->expr()->in('c', ':c'))
-                      ->setParameter('c', $competence)
+                      ->setParameter('c', $users)
                       ->getQuery()
                       ->getResult();
           
