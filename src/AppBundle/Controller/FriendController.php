@@ -43,15 +43,30 @@ class FriendController extends BaseController{
             foreach($friend->getUsers() as $user){
                 $userToAdd = $this->getUserRepository()->find($user->getId());
                 $newFriend->addUser($userToAdd);
-                
-                // TODU -> PTT CHECK SI FRIEND EXISTE
             }
+            
+            // SEND MAIL TO SECOND USER
+            $this->friendRequest($this, $newFriend->getUsers()[1]->getEmail(), $newFriend->getUsers()[0]);
 
-            // TODO -> merge enregistre pas dans la jointure
             $em->persist($newFriend);
             $em->flush();
 
             return $newFriend;
         }
+    }
+
+    public function friendRequest($controller,$sendTo, $userRequest){
+        $message = (new \Swift_Message('Sports \\ Friend Request'))
+        ->setFrom('sportsesgi@gmail.com')
+        ->setTo($sendTo)
+        ->setBody(
+            $controller->renderView(
+                // app/Resources/views/Emails/registration.html.twig
+                'Emails/friendRequest.html.twig',
+                array('name' => $userRequest->getUsername())
+            ),
+            'text/html'
+        );
+        $this->get('mailer')->send($message);
     }
 }
