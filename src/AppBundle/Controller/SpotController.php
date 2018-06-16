@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationList;
 use AppBundle\Exception\ResourceValidationException;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class SpotController extends BaseController
 {
