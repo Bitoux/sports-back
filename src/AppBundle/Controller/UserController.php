@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationList;
 use AppBundle\Exception\ResourceValidationException;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 
 
@@ -23,14 +22,6 @@ class UserController extends BaseController
     /**
      * @Rest\Get("/users", name="users_list")
      * @Rest\View
-     *
-     * @ApiDoc(
-     *     section = "User method",
-     *     description = "Get all users",
-     *     statusCodes = {
-     *         200 = "OK",
-     *     }
-     * )
      */
     public function getUsers()
     {
@@ -57,16 +48,6 @@ class UserController extends BaseController
 	/**
 	 * @Rest\Get("/users/{id}/get", name="user_detail_id")
 	 * @Rest\View
-	 * @ApiDoc(
-	 *   section="User method",
-	 *   description="Get user by id",
-	 *   requirements = {
-	 *     { "name"="id", "dataType"="integer", "requirement"="\d+", "description"="ID user" }
-	 *   },
-	 *   statusCodes={
-	 *     200 = "OK"
-	 *	 }
-	 * )
 	 */
 	public function getUserById($idUser){
 		$userManager = $this->get('fos_user.user_manager');
@@ -86,18 +67,6 @@ class UserController extends BaseController
      *     converter="fos_rest.request_body",
      *     options={
      *         "validator"={ "groups"="Create" }
-     *     }
-     * )
-     * @ApiDoc(
-     *     section = "User method",
-     *     description = "Create user in database",
-     *     requirements = {
-     *         { "name"="email", "dataType"="string"},
-     *         { "name"="password", "dataType"="string"},
-     *         { "name"="userName", "dataType"="string"}
-     *     },
-     *     statusCodes = {
-     *         201 = "Created",
      *     }
      * )
      */
@@ -140,19 +109,6 @@ class UserController extends BaseController
      *         "validator"={ "groups"="Create" }
      *     }
      * )
-     *
-     *  @ApiDoc(
-     *     section = "User method",
-     *     description = "Update user in database",
-     *     requirements = {
-     *         { "name"="id", "dataType"="string"},
-     *         { "name"="email", "dataType"="string"},
-     *         { "name"="username", "dataType"="string"}
-     *     },
-     *     statusCodes = {
-     *         201 = "Created",
-     *     }
-     * )
      */
     public function editUser(User $user, ConstraintViolationList $violations)
    {
@@ -186,16 +142,6 @@ class UserController extends BaseController
     /**
      * @Rest\Delete("/users/{id}/delete")
      * @Rest\View
-     * @ApiDoc(
-     *     section = "User method",
-     *     description = "Delete user",
-     *     requirements = {
-     *         { "name"="id", "dataType"="integer", "requirement"="\d+", "description"="ID du dossier" }
-     *     },
-     *     statusCodes = {
-     *         200 = "OK",
-     *     }
-     * )
      */
     public function deleteUser($idUser)
     {
@@ -218,14 +164,6 @@ class UserController extends BaseController
      *     converter="fos_rest.request_body",
      *     options={
      *         "validator"={ "groups"="Create" }
-     *     }
-     * )
-     *
-     * @ApiDoc(
-     *     section = "User method",
-     *     description = "Update user's filters",
-     *     statusCodes = {
-     *         200 = "OK",
      *     }
      * )
      */
@@ -263,14 +201,6 @@ class UserController extends BaseController
      *     converter="fos_rest.request_body",
      *     options={
      *         "validator"={ "groups"="Create" }
-     *     }
-     * )
-     *
-     * @ApiDoc(
-     *     section = "User method",
-     *     description = "Share user's map",
-     *     statusCodes = {
-     *         200 = "OK",
      *     }
      * )
      */

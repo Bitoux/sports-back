@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationList;
 use AppBundle\Exception\ResourceValidationException;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 
 
@@ -25,14 +24,6 @@ class MapController extends BaseController
      * @ParamConverter(
      *     "map",
      *     converter="fos_rest.request_body"
-     * )
-     *
-     * @ApiDoc(
-     *     section = "Map method",
-     *     description = "Create map's spot",
-     *     statusCodes = {
-     *         201 = "Created",
-     *     }
      * )
      */
     public function addUserSpots(Map $map, ConstraintViolationList $violations)

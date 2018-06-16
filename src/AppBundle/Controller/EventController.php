@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\ConstraintViolationList;
 use AppBundle\Exception\ResourceValidationException;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class EventController extends BaseController
 {
@@ -16,13 +15,6 @@ class EventController extends BaseController
 	/**
 	 * @Rest\Get("/events", name="event_list")
 	 * @Rest\View
-	 * @ApiDoc(
-	 *     section = "Event method",
-	 *     description = "Get all events",
-	 *     statusCodes = {
-	 *         200 = "OK",
-	 *     }
-	 * )
 	 */
 	public function getEvents(){
 		$events = $this->getEventRepository()->findAll();
@@ -33,16 +25,6 @@ class EventController extends BaseController
 	/**
 	 * @Rest\Delete("/events/{id}/delete")
 	 * @Rest\View
-	 * @ApiDoc(
-	 *   section="Event method",
-	 *   description="Delete event",
-	 *   requirements = {
-	 *         { "name"="id", "dataType"="integer", "description"="ID de l'event" }
-	 *     },
-	 *   statusCodes={
-	 *   		200="OK"
-	 *	 }
-	 * )
 	 */
 	public function deleteEvent($id){
 		$event = $this->getEventRepository()->find($id);
@@ -59,17 +41,6 @@ class EventController extends BaseController
 	 *   "event",
 	 *   converter="fos_rest.request_body"
 	 * )
-     *
-     * @ApiDoc(
-     *   section="Event method",
-     *   description="Update event",
-     *   requirements = {
-     *         { "name"="id", "dataType"="integer", "description"="ID de l'event" }
-     *     },
-     *   statusCodes={
-     *   		200="OK"
-     *	 }
-     * )
 	 */
 	public function updateEvent(Event $event, ConstraintViolationList $violations){
 		if (count($violations)) {
@@ -102,17 +73,6 @@ class EventController extends BaseController
 	 * @ParamConverter(
 	 *   "event",
 	 *   converter="fos_rest.request_body"
-	 * )
-	 *
-	 * @ApiDoc(
-	 *   section="Event method",
-	 *   description="Create event",
-	 *   requirements = {
-	 *         { "name"="id", "dataType"="integer", "description"="ID de l'event" }
-	 *     },
-	 *   statusCodes={
-	 *   		201 = "Created",
-	 *	 }
 	 * )
 	 */
 	public function addEvent(Event $event, ConstraintViolationList $violations){
