@@ -76,7 +76,7 @@ class User extends BaseUser
     protected $gender;
 
     /**
-     * 
+     *
      */
 
     /**
@@ -138,6 +138,17 @@ class User extends BaseUser
      *      )
      */
     protected $grades;
+
+    /**
+     * Many Users have Many Friend.
+     * @ORM\ManyToMany(targetEntity="Friend", inversedBy="users", cascade={"all"})
+     * @ORM\JoinTable(name="user_friends",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="friend_id", referencedColumnName="id")}
+     *      )
+     * @Groups({"user"})
+     */
+    protected $friends;
 
     /**
      * @Type("array")
@@ -389,9 +400,48 @@ class User extends BaseUser
         $this->maps = $maps;
     }
 
+    /**
+     * @return Friend
+     */
+    public function getFriends(){
+        return $this->friends;
+    }
+
+    /**
+     * @param Friend
+     */
+    public function setFriends($friends){
+        $this->friends = $friends;
+    }
+  
+    /**
+     * @return bool
+     */
+    public function getFbLogin(){
+      return $this->fbLogin;
+    }
+  
+  /**
+   * @param boolean
+   */
+    public function setFbLogin($fbLogin){
+      $this->fbLogin = $fbLogin;
+    }
+
+    /**
+     * @param Friend $friend
+     */
+    public function addFriend($friend){
+        $this->friends[] = $friend;
+    }
+
 
     public function isUser(UserInterface $user = null)
     {
         return $user instanceof self && $user->id === $this->id;
+    }
+
+    public function __construct(){
+        $this->friends = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }

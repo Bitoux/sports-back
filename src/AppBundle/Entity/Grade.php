@@ -56,6 +56,10 @@ class Grade
         $this->grade = $grade;
     }
 
-
-
+    public function __toString()
+    {
+      return $this->grade;
+    }
+  
+  
 }

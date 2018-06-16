@@ -56,6 +56,11 @@ class Filter
     {
         $this->designation = $designation;
     }
-
-
+    
+    public function __toString()
+    {
+      return $this->designation;
+    }
+  
+  
 }
