@@ -17,6 +17,7 @@ class SpotController extends BaseController
 	/**
 	 * @Rest\Get("/spots", name="spots_list")
 	 * @Rest\View(StatusCode = 200)
+	 *
 	 */
 	public function getSpots()
 	{

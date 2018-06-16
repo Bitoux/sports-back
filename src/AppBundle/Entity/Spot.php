@@ -251,5 +251,10 @@ class Spot
 			$this->events = new ArrayCollection();
 			$this->grades = new ArrayCollection();
 		}
-
+		
+		public function __toString()
+    {
+      return $this->name;
+    }
+  
 }

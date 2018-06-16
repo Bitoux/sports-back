@@ -74,6 +74,7 @@ class EventController extends BaseController
 	 *   "event",
 	 *   converter="fos_rest.request_body"
 	 * )
+	 *
 	 */
 	public function addEvent(Event $event, ConstraintViolationList $violations){
 		if (count($violations)) {
