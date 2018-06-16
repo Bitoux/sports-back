@@ -48,10 +48,10 @@ class FriendController extends BaseController{
             }
 
             // TODO -> merge enregistre pas dans la jointure
-            $em->merge($friend);
+            $em->persist($newFriend);
             $em->flush();
 
-            return $friend;
+            return $newFriend;
         }
     }
 }
