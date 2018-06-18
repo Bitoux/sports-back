@@ -1,0 +1,11 @@
+<h3>Hi {{user.username}}, new from Spo(r)ts!</h3>
+
+You're registration succeed.
+
+{% if user.fbLogin  %}
+
+You're password is <em>{{password}}</em>.
+
+You should change it in the app parameters.
+
+{% endif %}
