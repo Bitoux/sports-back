@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationList;
 use AppBundle\Exception\ResourceValidationException;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 
 
@@ -87,7 +86,7 @@ class UserController extends BaseController
 
         $user->setRoles(array('ROLE_READER'));
         $user->setEnabled(true);
-        $user -> setMap($map);
+        $user->setMap($map);
 
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($user);
@@ -95,7 +94,10 @@ class UserController extends BaseController
 
         $userManager = $this->get('fos_user.user_manager');
         $user->setPlainPassword($user->getPassword());
+        $password = $user->getPassword();
         $userManager->updateUser($user);
+
+        $this->friendRequestEmail($this, $user, $password);
 
         return $user;
     }
@@ -240,4 +242,22 @@ class UserController extends BaseController
 
     }
 
+    // SEND EMAIL ON REGISTER
+    public function friendRequestEmail($controller,$user, $password){
+        $message = (new \Swift_Message('Sports \\ Registration'))
+        ->setFrom('sportsesgi@gmail.com')
+        ->setTo($user->getEmail())
+        ->setBody(
+            $controller->renderView(
+                // app/Resources/views/Emails/registration.html.twig
+                'Emails/registration.html.twig',
+                array(
+                    'user' => $user,
+                    'password' => $password
+                )
+            ),
+            'text/html'
+        );
+        $this->get('mailer')->send($message);
+    }
 }

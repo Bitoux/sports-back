@@ -61,7 +61,7 @@ class LoadPostData implements FixtureInterface, ContainerAwareInterface
         $fakeUser->setLastName('Moulin');
         $fakeUser->setUserName('JMoulin');
         $fakeUser->setPassword('$2y$13$JOvZdRIR9vAjfcRCD.ReLOnqWE9EG9kVcvQUesN2BTRZVg.hikIba');
-        $fakeUser->setEmail('jmoulin@fake.com');
+        $fakeUser->setEmail('yannmiloux@gmail.com');
         $fakeUser->setAdress('9 avenue de la République');
         $fakeUser->setCity('Paris');
         $fakeUser->setCountry('France');

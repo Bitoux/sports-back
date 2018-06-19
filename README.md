@@ -5,13 +5,16 @@ php bin/console server:run
 php bin/console cache:clear --no-warmup --env=dev
 
 # Création de la base
-bin/console do:da:cr
+php bin/console do:da:cr
 
 # Création du schéma de données
-bin/console do:sc:cr
+php bin/console do:sc:cr
 
 # Générations des fixtures
-bin/console doctrine:fixtures:load
+php bin/console doctrine:fixtures:load
 
 # Deployer sur Heroku
 git push heroku master
+
+# Lancer l'app sur le wifi
+php bin/console server:run 192.168.0.50:8000

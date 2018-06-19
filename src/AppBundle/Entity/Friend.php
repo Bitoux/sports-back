@@ -75,7 +75,7 @@ class Friend
      * @param User
      */
     public function addUser($user){
-        $user->addFriend($this);
+        $user = $user->addFriend($this);
         $this->users[] = $user;
         
     }

@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Validator\ConstraintViolationList;
 use AppBundle\Exception\ResourceValidationException;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class EventController extends BaseController
 {
@@ -25,6 +24,7 @@ class EventController extends BaseController
 
 	/**
 	 * @Rest\Delete("/events/{id}/delete")
+	 * @Rest\View
 	 */
 	public function deleteEvent($id){
 		$event = $this->getEventRepository()->find($id);

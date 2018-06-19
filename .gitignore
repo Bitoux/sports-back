@@ -16,3 +16,5 @@
 /vendor/
 /web/bundles/
 /.idea
+
+app/config/config\.yml

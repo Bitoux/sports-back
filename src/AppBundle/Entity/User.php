@@ -430,9 +430,11 @@ class User extends BaseUser
 
     /**
      * @param Friend $friend
+     * @return User 
      */
     public function addFriend($friend){
         $this->friends[] = $friend;
+        return $this;
     }
 
 
