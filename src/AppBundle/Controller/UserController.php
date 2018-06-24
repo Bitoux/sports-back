@@ -44,6 +44,7 @@ class UserController extends BaseController
             return $user;
         }
     }
+    
 
 	/**
 	 * @Rest\Get("/users/{id}/get", name="user_detail_id")
@@ -56,6 +57,20 @@ class UserController extends BaseController
 			return $idUser;
 		} else {
 			return $user;
+		}
+    }
+    
+    /**
+	 * @Rest\Get("/users/{id}/friends", name="user_friends")
+	 * @Rest\View
+	 */
+	public function getFriendsByUserId($id){
+		$userManager = $this->get('fos_user.user_manager');
+		$user = $userManager->findUserBy(array('id'=>$id));
+		if(!$user instanceof User){
+			return $id;
+		} else {
+			return $user->getFriends();
 		}
 	}
 
