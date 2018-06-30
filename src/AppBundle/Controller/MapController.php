@@ -45,6 +45,13 @@ class MapController extends BaseController
                 $tmpSpot = $this->getSpotRepository()->find($spot->getId());
                 array_push($spots, $tmpSpot);
             } else {
+                $filters = array();
+
+                foreach ($spot->getFilters() as $filter){
+                    $tmpFilter = $this->getFilterRepository()->find($filter->getId());
+                    array_push($filters, $tmpFilter);
+                }
+                $spot->setFilters($filters);
                 array_push($spots, $spot);
             }
 
