@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Repository\FriendRepository;
 use AppBundle\Entity\Friend;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Invitation;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcher;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -14,6 +15,33 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use AppBundle\Exception\ResourceValidationException;
 
 class FriendController extends BaseController{
+
+    /**
+     * @Rest\Post("/friends/accept", name="accept_friend")
+     * @Rest\View(StatusCode = 200)
+     */
+    public function acceptFriend(Request $request){
+        $invitationId = $request->get('id');
+        $accept = $request->get('accept');
+
+        $invitation = $this->getInvitationRepository()->find($invitationId);
+
+        $friend = $invitation->getFriend();
+
+        if($accept){
+            $friend->setStatus('accept');
+            $this->getDoctrine()->getManager()->remove($invitation);
+            $this->getDoctrine()->getManager()->persist($friend);
+        }else{
+            $this->getDoctrine()->getManager()->remove($invitation);
+            $this->getDoctrine()->getManager()->remove($friend);
+        }
+
+        
+        $this->getDoctrine()->getManager()->flush();
+        
+        return "OK";
+    }
 
     /**
      * @Rest\Post("/friends/request", name="friend_request")
@@ -34,6 +62,10 @@ class FriendController extends BaseController{
         $userManager = $this->get('fos_user.user_manager');
         $added = $userManager->findUserByUsername($request->get('username'));
 
+        if(is_null($added)){
+            return 'User not found';
+        }
+        
         $em = $this->getDoctrine()->getManager();
 
         $checkFriend = $this->getDoctrine()->getRepository(Friend::class)
@@ -50,7 +82,12 @@ class FriendController extends BaseController{
             // SEND MAIL TO SECOND USER
             $this->friendRequestEmail($this, $added->getEmail(), $adder);
 
+            $invitation = new Invitation();
+            $invitation->setFriend($newFriend);
+            $invitation->setUser($added);
+
             $em->persist($newFriend);
+            $em->persist($invitation);
             $em->flush();
 
             return $newFriend->getUsers()[0];

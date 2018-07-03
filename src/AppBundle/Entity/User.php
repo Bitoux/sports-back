@@ -151,6 +151,12 @@ class User extends BaseUser
     protected $friends;
 
     /**
+     * One User has Many Invitations.
+     * @ORM\OneToMany(targetEntity="Invitation", mappedBy="user")
+     */
+    private $invitations;
+
+    /**
      * @Type("array")
      */
     protected $groups;
@@ -437,6 +443,18 @@ class User extends BaseUser
         return $this;
     }
 
+    public function getInvitations(){
+        return $this->invitations;
+    }
+
+    public function setInvitations($invitations){
+        $this->invitations = $invitations;
+    }
+
+    public function addInvitation($invitation){
+        $this->invitations[] = $invitation;
+    }
+
 
     public function isUser(UserInterface $user = null)
     {
@@ -445,5 +463,6 @@ class User extends BaseUser
 
     public function __construct(){
         $this->friends = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->invitations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 }
