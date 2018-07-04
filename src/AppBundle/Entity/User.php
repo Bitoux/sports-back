@@ -437,6 +437,15 @@ class User extends BaseUser
         return $this;
     }
 
+    /**
+     * @param User $owner
+     * @return User
+     */
+    public function addOwner($owner){
+        $this->owner[] = $owner;
+        return $this;
+    }
+
 
     public function isUser(UserInterface $user = null)
     {

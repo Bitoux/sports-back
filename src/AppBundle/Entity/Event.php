@@ -20,14 +20,11 @@ class Event
     protected $id;
 
     /**
-     * @ORM\Column(type="integer", length=255, nullable=true)
+     * One Event have one Owner
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $owner;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -37,7 +34,7 @@ class Event
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $subject;
+    protected $price;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -55,6 +52,26 @@ class Event
      * @ORM\JoinColumn(name="spot_id", referencedColumnName="id")
      */
     protected $spot;
+
+    /**
+     * Many Event have Many Users.
+     * @ORM\ManyToMany(targetEntity="User")
+     * @ORM\JoinTable(name="events_users",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id")}
+     *      )
+     */
+    protected $users;
+
+    /**
+     * Many Spots have Many Grades.
+     * @ORM\ManyToMany(targetEntity="Filter")
+     * @ORM\JoinTable(name="events_filters",
+     *      joinColumns={@ORM\JoinColumn(name="filter_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="event_id", referencedColumnName="id")}
+     *      )
+     */
+    protected $filters;
 
     /**
      * @return mixed
@@ -81,28 +98,16 @@ class Event
     }
 
     /**
-     * @param mixed $owner
+     * @param Spot $spot
+     * @return $this
      */
-    public function setOwner($owner)
+    public function setOwner(User $owner)
     {
         $this->owner = $owner;
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param mixed $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
 
     /**
      * @return mixed
@@ -120,21 +125,6 @@ class Event
         $this->date = $date;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSubject()
-    {
-        return $this->subject;
-    }
-
-    /**
-     * @param mixed $subject
-     */
-    public function setSubject($subject)
-    {
-        $this->subject = $subject;
-    }
 
     /**
      * @return mixed
@@ -168,6 +158,8 @@ class Event
         $this->nb_user = $nb_user;
     }
 
+
+
 	/**
 	 * @return mixed
 	 */
@@ -179,23 +171,74 @@ class Event
 	 * @param Spot $spot
 	 * @return $this
 	 */
-		public function setSpot(Spot $spot){
+	public function setSpot(Spot $spot){
     	$this->spot = $spot;
 
     	return $this;
-		}
+	}
+
+    /**
+     * @return mixed
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param mixed $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param mixed $users
+     */
+    public function setUsers($users)
+    {
+        $this->users = $users;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFilters()
+    {
+        return $this->filters;
+    }
+
+    /**
+     * @param mixed $filters
+     */
+    public function setFilters($filters)
+    {
+        $this->filters = $filters;
+    }
+
+
+
 
 	/**
-	 * @param $name
+	 * @param $owner
 	 * @param $date
-	 * @param $subject
+	 * @param $price
 	 * @param $description
+	 * @param $nb_user
 	 * @return $this
 	 */
-		public function setEvent($name, $date, $subject, $description, $nb_user){
-			$this->name = $name;
+		public function setEvent($date, $price, $description, $nb_user){
 			$this->date = $date;
-			$this->subject = $subject;
+			$this->price = $price;
 			$this->description = $description;
 			$this->nb_user = $nb_user;
 
@@ -203,10 +246,7 @@ class Event
 		}
 
 
-		public function __toString()
-    {
-      return $this->name;
-    }
+
   
   
 }

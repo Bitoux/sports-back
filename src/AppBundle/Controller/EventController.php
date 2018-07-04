@@ -54,12 +54,30 @@ class EventController extends BaseController
 		$eventRes = $this->getEventRepository()->find($event->getId());
 
 		$eventRes->setEvent(
-			$event->getName(),
 			$event->getDate(),
-			$event->getSubject(),
+			$event->getPrice(),
 			$event->getDescription(),
 			$event->getNbUser()
 		);
+
+        $users = array();
+
+        foreach($event->getUsers() as $user){
+            $tmpUser = $this->getuserRepository()->find($user->getId());
+            array_push($users, $tmpUser);
+        }
+
+        $eventRes->setUsers($users);
+
+        $filters = array();
+
+        foreach ($event->getFilters() as $filter){
+            $tmpFilter = $this->getFilterRepository()->find($filter->getId());
+            array_push($filters, $tmpFilter);
+        }
+
+        $eventRes->setFilters($filters);
+
 
 		$this->getDoctrine()->getManager()->persist($eventRes);
 		$this->getDoctrine()->getManager()->flush();
@@ -68,7 +86,7 @@ class EventController extends BaseController
 	}
 
 	/**
-	 * @Rest\Post("/events/{id}/create")
+	 * @Rest\Post("/events/create")
 	 * @Rest\View(StatusCode = 200)
 	 * @ParamConverter(
 	 *   "event",
@@ -86,15 +104,34 @@ class EventController extends BaseController
 		}
 
 		$newEvent = new Event();
-		$newEvent->setName($event->getName());
 		$newEvent->setDate($event->getDate());
-		$newEvent->setSubject($event->getSubject());
+		$newEvent->setPrice($event->getPrice());
 		$newEvent->setNbUser($event->getNbUser());
 		$newEvent->setDescription($event->getDescription());
-		$newEvent->setOwner($event->getOwner());
+
+        $ownerRes = $this->getUserRepository()->find($event->getOwner()->getId());
+        $newEvent->setOwner($ownerRes);
 
 		$spotRes = $this->getSpotRepository()->find($event->getSpot()->getId());
 		$spotRes->addEvent($newEvent);
+
+        $users = array();
+
+        foreach($event->getUsers() as $user){
+            $tmpUser = $this->getuserRepository()->find($user->getId());
+            array_push($users, $tmpUser);
+        }
+
+        $newEvent->setUsers($users);
+
+        $filters = array();
+
+        foreach ($event->getFilters() as $filter){
+            $tmpFilter = $this->getFilterRepository()->find($filter->getId());
+            array_push($filters, $tmpFilter);
+        }
+
+        $newEvent->setFilters($filters);
 
 		$this->getDoctrine()->getManager()->persist($newEvent);
 		$this->getDoctrine()->getManager()->flush();

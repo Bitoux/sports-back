@@ -79,13 +79,7 @@ class LoadPostData implements FixtureInterface, ContainerAwareInterface
         $fakeSpot->setName('Exemple');
         $fakeSpots = array($fakeSpot);
 
-        $fakeEvent = new Event();
-        $fakeEvent->setName('Aprem 4vs4');
-        $fakeEvent->setDate('2018-01-25');
-        $fakeEvent->setSubject('4vs4 de Basket !');
-        $fakeEvent->setDescription('Bonjour ! j\'aimerai faire un basket Jeudi 25 Janvier et je cherche du monde ! ');
-        $fakeEvent->setNbUser(8);
-        $fakeEvents = array($fakeEvent);
+
 
         $manager->persist($basketFilter);
         $manager->persist($footFilter);
@@ -97,7 +91,6 @@ class LoadPostData implements FixtureInterface, ContainerAwareInterface
         $manager->persist($fakeGrade4);
         $manager->persist($fakeGrade5);
         $managerFos->updateUser($fakeUser);
-        $manager->persist($fakeEvent);
         $manager->persist($fakeSpot);
         $manager->persist($fakeMap);
 
@@ -111,8 +104,6 @@ class LoadPostData implements FixtureInterface, ContainerAwareInterface
         $fakeSpot->setFilters($fakeFilters);
         $fakeSpot->setGrades($fakeGrades);
 
-        $fakeEvent->setOwner($fakeUser->getId());
-        $fakeEvent->setSpot($fakeSpot);
 
         $manager->flush();
     }
