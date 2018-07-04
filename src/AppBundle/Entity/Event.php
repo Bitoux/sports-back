@@ -8,7 +8,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
-
  */
 class Event
 {

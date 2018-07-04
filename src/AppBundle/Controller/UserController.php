@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationList;
 use AppBundle\Exception\ResourceValidationException;
+use Symfony\Component\Serializer\Normalizer\DataUriNormalizer;
 
 
 
@@ -71,6 +72,20 @@ class UserController extends BaseController
 			return $id;
 		} else {
 			return $user->getFriends();
+		}
+    }
+    
+    /**
+	 * @Rest\Get("/users/{id}/invitations", name="user_invitations")
+	 * @Rest\View
+	 */
+	public function getInvitationsByUserId($id){
+		$userManager = $this->get('fos_user.user_manager');
+		$user = $userManager->findUserBy(array('id'=>$id));
+		if(!$user instanceof User){
+			return $id;
+		} else {
+			return $user->getInvitations();
 		}
 	}
 
@@ -255,6 +270,40 @@ class UserController extends BaseController
             return $user;
         }
 
+    }
+
+    /**
+     * @Rest\Post("/users/edit/image", name="edit_image")
+     * @Rest\View(StatusCode = 200)
+     */
+    public function editImage(Request $request, ConstraintViolationList $violations)
+    {
+
+        if (count($violations)) {
+            $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
+            foreach ($violations as $violation) {
+                $message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
+            }
+            throw new ResourceValidationException($message);
+        }
+
+        return "OK";
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserBy(array('id'=>$request->get('id')));
+        
+        return $user;
+
+        $imgBase64 = $request->get('img');
+
+        $data = str_replace('data:image/*;charset=utf-8;base64,', '', $imgBase64);
+        $data = str_replace(' ', '+', $data);
+
+        $data = base64_decode($data);
+        $image = imagecreatefromstring($data);
+        $filename = __DIR__ . '../../../web/uploads/user-' . $user->getId() . '.png';
+        $saveImage = imagejpeg($image, $filename);
+
+        return 'OK';
     }
 
     // SEND EMAIL ON REGISTER

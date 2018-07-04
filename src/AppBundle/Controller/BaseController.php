@@ -48,6 +48,10 @@ class BaseController extends FOSRestController
         return $this->getDoctrine()->getRepository('AppBundle:Friend');
     }
 
+    public function getInvitationRepository(){
+        return $this->getDoctrine()->getRepository('AppBundle:Invitation');
+    }
+
 
 
 }
