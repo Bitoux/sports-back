@@ -157,6 +157,13 @@ class User extends BaseUser
     private $invitations;
 
     /**
+     * User Cart has One Company.
+     * @ORM\OneToOne(targetEntity="Company", inversedBy="user")
+     * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
+     */
+     private $company;
+
+    /**
      * @Type("array")
      */
     protected $groups;
@@ -461,6 +468,14 @@ class User extends BaseUser
 
     public function addInvitation($invitation){
         $this->invitations[] = $invitation;
+    }
+
+    public function getCompany(){
+        return $this->company;
+    }
+
+    public function setCompany($company){
+        $this->company = $company;
     }
 
 

@@ -52,6 +52,18 @@ class BaseController extends FOSRestController
         return $this->getDoctrine()->getRepository('AppBundle:Invitation');
     }
 
+    public function getCompanyRepository(){
+        return $this->getDoctrine()->getRepository('AppBundle:Company');
+    }
+
+    public function getPaymentRepository(){
+        return $this->getDoctrine()->getRepository('AppBundle:Payment');
+    }
+
+    public function getProEventRepository(){
+        return $this->getDoctrine()->getRepository('AppBundle:ProEvent');
+    }
+
 
 
 }

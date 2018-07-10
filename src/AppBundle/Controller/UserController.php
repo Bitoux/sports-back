@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Map;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Filter;
+use AppBundle\Entity\Company;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcher;
@@ -131,6 +132,51 @@ class UserController extends BaseController
 
         return $user;
     }
+
+    /**
+     * @Rest\Post("/users/create/company")
+     * @Rest\View(StatusCode = 201)
+     * @ParamConverter(
+     *     "user",
+     *     converter="fos_rest.request_body",
+     *     options={
+     *         "validator"={ "groups"="Create" }
+     *     }
+     * )
+     */
+     public function createUserCompany(User $user, ConstraintViolationList $violations){
+        if (count($violations)) {
+            $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
+            foreach ($violations as $violation) {
+                $message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
+            }
+
+            throw new ResourceValidationException($message);
+        }
+
+        $map = new Map();
+        $map->setName($user->getUsername());
+
+        $user->setRoles(array('ROLE_READER'));
+        $user->setEnabled(true);
+        $user->setMap($map);
+
+        $company = new Company();
+        $company->setUser($user);
+        $user->setCompany($company);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->persist($company);
+        $entityManager->flush();
+
+        $userManager = $this->get('fos_user.user_manager');
+        $user->setPlainPassword($user->getPassword());
+        $password = $user->getPassword();
+        $userManager->updateUser($user);
+
+        return $user;
+     }
 
     /**
      * @Rest\Put("/users/{id}/edit")
