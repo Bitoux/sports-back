@@ -15,15 +15,35 @@ use AppBundle\Exception\ResourceValidationException;
 class ProEventController extends BaseController{
 
     /**
-	 * @Rest\Get("/proevents", name="proevents_list")
+	 * @Rest\Get("/proevents/{id}", name="proevents_list")
 	 * @Rest\View(StatusCode = 200)
 	 *
 	 */
-	public function getProEvents()
+	public function getProEventsByCompanyId($id)
 	{
-		$proEvents = $this->getProEventRepository()->findAll();
 
-		return $proEvents;
+        $company = $this->getCompanyRepository()->find($id);
+
+		return $company->getProEvents();
+
+    }
+    
+    /**
+	 * @Rest\Get("/proevents/{id}/single", name="proevents_single")
+	 * @Rest\View(StatusCode = 200)
+	 *
+	 */
+	public function getProEventSingle($id)
+	{
+
+        $proEvent = $this->getProEventRepository()->find($id);
+        if(isset($proEvent)){
+            return $proEvent;
+        }else{
+            return "KO";
+        }
+		
+
 	}
 
     /**
