@@ -64,7 +64,8 @@ class User extends BaseUser
     protected $fbLogin;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\File(mimeTypes={ "image/png", "image/gif", "image/jpeg", "image/bmp", "image/webp" })
      * @Groups({"user"})
      */
     protected $picture;
@@ -476,6 +477,15 @@ class User extends BaseUser
 
     public function setCompany($company){
         $this->company = $company;
+    }
+
+    public function getPicture(){
+        return $this->picture;
+    }
+
+
+    public function setPicture($picture){
+        $this->picture = $picture;
     }
 
 

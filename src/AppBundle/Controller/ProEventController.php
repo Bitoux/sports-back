@@ -12,21 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolationList;
 use AppBundle\Exception\ResourceValidationException;
 
-class ProEventController extends BaseController{
-
-    /**
-	 * @Rest\Get("/proevents/{id}", name="proevents_list")
-	 * @Rest\View(StatusCode = 200)
-	 *
-	 */
-	public function getProEventsByCompanyId($id)
-	{
-
-        $company = $this->getCompanyRepository()->find($id);
-
-		return $company->getProEvents();
-
-    }
+class ProEventController extends BaseController
+{
     
     /**
 	 * @Rest\Get("/proevents/{id}/single", name="proevents_single")
@@ -44,7 +31,53 @@ class ProEventController extends BaseController{
         }
 		
 
-	}
+    }
+    
+    /**
+     * @Rest\Post("/proevents/edit", name="edit_proevent")
+     * @Rest\View(StatusCode = 200)
+     */
+    public function editProEvent(Request $request){
+        $name = $request->get('name'); 
+        $description = $request->get('description'); 
+        $address = $request->get('address'); 
+        $lat = $request->get('lat'); 
+        $lng = $request->get('lng'); 
+        $date = $request->get('date'); 
+        $hour = $request->get('hour'); 
+        $img = $request->files->get('img');
+        $companyID = $request->get('company');
+        $changed = $request->get('changed');
+        $id = $request->get('id');
+
+        $proEvent = $this->getProEventRepository()->find($id);
+
+        $proEvent->setName($name);
+        $proEvent->setDescription($description);
+        $proEvent->setAddress($address);
+        $proEvent->setLat($lat);
+        $proEvent->setLong($lng);
+        $proEvent->setDate($date);
+        $proEvent->setHour($hour);
+
+        $company = $this->getCompanyRepository()->find($companyID);
+
+        if($changed){
+            $fileName = $this->generateUniqueFileName() . '.' . $img->guessExtension();
+
+            $img->move(
+                $this->getParameter('company_directory'),
+                $fileName
+            );
+            $proEvent->setPicture($fileName);
+        }
+
+        $this->getDoctrine()->getManager()->persist($proEvent);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $company->getUser();
+
+    }
 
     /**
      * @Rest\Post("/proevents/create", name="create_proevent")
