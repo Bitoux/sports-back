@@ -85,6 +85,7 @@ fos_rest:
         enabled: true
         rules:
             - { path: '^/admin', stop: true }
+            - { path: '^/uploads', stop: true }
             - { path: '^/', priorities: ['json'], fallback_format: 'json' }
     exception:
         enabled: true
@@ -96,7 +97,7 @@ fos_rest:
 lexik_jwt_authentication:
     private_key_path: '%kernel.root_dir%/../var/jwt/private.pem' 
     public_key_path:  '%kernel.root_dir%/../var/jwt/public.pem' 
-    pass_phrase:      'secret'
+    pass_phrase:      '%secret_word%'
     token_ttl:        3600 
 
 fos_user:

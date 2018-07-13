@@ -64,7 +64,8 @@ class User extends BaseUser
     protected $fbLogin;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\File(mimeTypes={ "image/png", "image/gif", "image/jpeg", "image/bmp", "image/webp" })
      * @Groups({"user"})
      */
     protected $picture;
@@ -155,6 +156,13 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="Invitation", mappedBy="user")
      */
     private $invitations;
+
+    /**
+     * User Cart has One Company.
+     * @ORM\OneToOne(targetEntity="Company", inversedBy="user")
+     * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
+     */
+     private $company;
 
     /**
      * @Type("array")
@@ -461,6 +469,23 @@ class User extends BaseUser
 
     public function addInvitation($invitation){
         $this->invitations[] = $invitation;
+    }
+
+    public function getCompany(){
+        return $this->company;
+    }
+
+    public function setCompany($company){
+        $this->company = $company;
+    }
+
+    public function getPicture(){
+        return $this->picture;
+    }
+
+
+    public function setPicture($picture){
+        $this->picture = $picture;
     }
 
 
