@@ -44,6 +44,35 @@ class FriendController extends BaseController{
     }
 
     /**
+     * @Rest\Post("/friends/acceptEvent", name="accept_friendEvent")
+     * @Rest\View(StatusCode = 200)
+     */
+    public function acceptEvent(Request $request){
+        $invitationId = $request->get('id');
+        $accept = $request->get('accept');
+        $invitation = $this->getInvitationRepository()->find($invitationId);
+        $event = $invitation->getEvent();
+        $eventRes = $this->getEventRepository()->find($event->getId());
+        $users = $eventRes->getUsers();
+        $tmpUser = $this->getUserRepository()->find($invitation->getUser()->getId());
+        $users->add($tmpUser);
+        if($accept){
+            $eventRes->setUsers($users);
+            $this->getDoctrine()->getManager()->remove($invitation);
+            $this->getDoctrine()->getManager()->persist($eventRes);
+        }else{
+            $this->getDoctrine()->getManager()->remove($invitation);
+        }
+
+        $this->getDoctrine()->getManager()->flush();
+
+        $new = $this->getUserRepository()->find($tmpUser->getId());
+        $userManager = $this->get('fos_user.user_manager');
+        $ur = $userManager->findUserByUsername($new->getUserName());
+        return $ur;
+    }
+
+    /**
      * @Rest\Post("/friends/request", name="friend_request")
      * @Rest\View(StatusCode = 200)
      */
@@ -68,33 +97,64 @@ class FriendController extends BaseController{
         
         $em = $this->getDoctrine()->getManager();
 
-        $checkFriend = $this->getDoctrine()->getRepository(Friend::class)
-        ->checkUsers([$adder, $added]);
+        $newFriend = new Friend();
+        $newFriend->setStatus($status);
+        $newFriend->addUser($adder);
+        $newFriend->addUser($added);
 
-        if($checkFriend){
-            return 'Already in friend';
-        }else{
-            $newFriend = new Friend();
-            $newFriend->setStatus($status);
-            $newFriend->addUser($adder);
-            $newFriend->addUser($added);
-            
-            // SEND MAIL TO SECOND USER
-            $this->friendRequestEmail($this, $added->getEmail(), $adder);
+        // SEND MAIL TO SECOND USER
+        $this->friendRequestEmail($this, $added->getEmail(), $adder);
 
+        $invitation = new Invitation();
+        $invitation->setFriend($newFriend);
+        $invitation->setUser($added);
+
+        $em->persist($newFriend);
+        $em->persist($invitation);
+        $em->flush();
+
+        $new = $this->getUserRepository()->find($request->get('id'));
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->findUserByUsername($new->getUserName());
+        return $user;
+
+    }
+
+    /**
+     * @Rest\Post("/friends/requestEvent", name="friend_requestEvent")
+     * @Rest\View(StatusCode = 200)
+     */
+    public function addFriendRequestEvent(Request $request){
+        /*if (count($violations)) {
+			$message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
+			foreach ($violations as $violation) {
+				$message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
+			}
+			throw new ResourceValidationException($message);
+        }*/
+
+        foreach($request->get('users') as $user) {
+            $tmpUser = $this->getUserRepository()->find($user['id']);
+            $event = $this->getEventRepository()->find($request->get('id_event'));
+
+            if(is_null($tmpUser)){
+                return 'User not found';
+            }
+
+            $em = $this->getDoctrine()->getManager();
             $invitation = new Invitation();
-            $invitation->setFriend($newFriend);
-            $invitation->setUser($added);
+            $invitation->setEvent($event);
+            $invitation->setUser($tmpUser);
 
-            $em->persist($newFriend);
             $em->persist($invitation);
             $em->flush();
-
-            $new = $this->getUserRepository()->find($request->get('id'));
-            $userManager = $this->get('fos_user.user_manager');
-            $user = $userManager->findUserByUsername($new->getUserName());
-            return $user;
         }
+
+        $new = $this->getUserRepository()->find($request->get('id'));
+        $userManager = $this->get('fos_user.user_manager');
+        $usr = $userManager->findUserByUsername($new->getUserName());
+        return $usr;
+
     }
 
     public function friendRequestEmail($controller,$sendTo, $userRequest){
