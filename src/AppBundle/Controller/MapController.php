@@ -65,4 +65,16 @@ class MapController extends BaseController
         return $mapRes;
     }
 
+
+    /**
+	 * @Rest\Get("/map/{id}/shops", name="company_shops")
+	 * @Rest\View(StatusCode = 200)
+	 *
+	 */
+    public function getMapSpots($id){
+        $map = $this->getMapRepository()->find($id);
+
+        return $map->getSpots();
+    }
+
 }

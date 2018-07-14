@@ -71,6 +71,13 @@ class User extends BaseUser
     protected $picture;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\File(mimeTypes={ "image/png", "image/gif", "image/jpeg", "image/bmp", "image/webp" })
+     * @Groups({"user"})
+     */
+    protected $pinMap;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"user"})
      */
@@ -486,6 +493,14 @@ class User extends BaseUser
 
     public function setPicture($picture){
         $this->picture = $picture;
+    }
+
+    public function getPinMap(){
+        return $this->pinMap;
+    }
+
+    public function setPinMap($pinMap){
+        $this->pinMap = $pinMap;
     }
 
 

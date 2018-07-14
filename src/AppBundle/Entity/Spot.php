@@ -29,15 +29,25 @@ class Spot
      */
     protected $latitude;
 
-		/**
-		 * @ORM\Column(type="string", length=255, nullable=true)
-		 */
-		protected $address;
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $address;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $name;
+    
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $description;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $isPro;
 
     /**
      * Many Spots have Many Filters.
@@ -202,57 +212,73 @@ class Spot
 	/**
 	 * @param mixed $event
 	 */
-		public function addEvent($event){
-			$this->events[] = $event;
-			$event->setSpot($this);
-		}
+    public function addEvent($event){
+        $this->events[] = $event;
+        $event->setSpot($this);
+    }
 
     /**
-		 * @return string
-		 */
+     * @return string
+     */
     public function getAddress(){
     	return $this->address;
-		}
+    }
 
-		/**
-		 * @param string $address
-		 * @return string
-		 */
-		public function setAddress($address){
-			$this->address = $address;
-			return $this->address;
-		}
+    /**
+     * @param string $address
+     * @return string
+     */
+    public function setAddress($address){
+        $this->address = $address;
+        return $this->address;
+    }
 
-		/**
-		 * @param string $address
-		 * @param string $latitude
-		 * @param string $longitude
-		 * @param string $name
-		 * @param mixed $events
-		 * @param mixed $grades
-		 * @param mixed $filters
-		 *
-		 * @return mixed
-		 */
-		public function setSpot($address, $latitude, $longitude, $name, $events, $filters){
-			$this->address = $address;
-			$this->latitude = $latitude;
-			$this->longitude = $longitude;
-			$this->name = $name;
-			$this->events = $events;
-			$this->filters = $filters;
+    public function getDescription(){
+        return $this->description;
+    }
 
-			return $this;
-		}
+    public function setDescription($description){
+        $this->description = $description;
+    }
 
-		public function __construct()
-		{
-			$this->filters = new ArrayCollection();
-			$this->events = new ArrayCollection();
-			$this->grades = new ArrayCollection();
-		}
+    public function getIsPro(){
+        return $this->isPro;
+    }
+
+    public function setIsPro($isPro){
+        $this->isPro = $isPro;
+    }
+
+    /**
+     * @param string $address
+     * @param string $latitude
+     * @param string $longitude
+     * @param string $name
+     * @param mixed $events
+     * @param mixed $grades
+     * @param mixed $filters
+     *
+     * @return mixed
+     */
+    public function setSpot($address, $latitude, $longitude, $name, $events, $filters){
+        $this->address = $address;
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
+        $this->name = $name;
+        $this->events = $events;
+        $this->filters = $filters;
+
+        return $this;
+    }
+
+    public function __construct()
+    {
+        $this->filters = new ArrayCollection();
+        $this->events = new ArrayCollection();
+        $this->grades = new ArrayCollection();
+    }
 		
-		public function __toString()
+    public function __toString()
     {
       return $this->name;
     }

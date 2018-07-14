@@ -123,4 +123,76 @@ class SpotController extends BaseController
 		return new JsonResponse(array("status" => 200));
 	}
 
+	/**
+     * @Rest\Post("/spot/pro/create", name="shop_create")
+     * @Rest\View(StatusCode = 200)
+     */
+	public function createProSpot(Request $request){
+		$longitude = $request->get('lng');
+		$lattitude = $request->get('lat');
+		$address = $request->get('address');
+		$name = $request->get('name');
+		$description = $request->get('description');
+		$isPro = $request->get('isPro');
+		$idMap = $request->get('idMap');
+
+		$spot = new Spot();
+
+		$spot->setLongitude($longitude);
+		$spot->setLatitude($lattitude);
+		$spot->setAddress($address);
+		$spot->setName($name);
+		$spot->setDescription($description);
+		$spot->setIsPro($isPro);
+
+		$map = $this->getMapRepository()->find($idMap);
+		$filter = $this->getFilterRepository()->find(4);
+		$spot->addFilter($filter);
+		$map->addSpot($spot);
+
+		$this->getDoctrine()->getManager()->persist($spot);
+		$this->getDoctrine()->getManager()->persist($map);
+		$this->getDoctrine()->getManager()->flush();
+
+		return $map;
+
+	}
+
+	/**
+     * @Rest\Post("/spot/pro/edit", name="shop_edit")
+     * @Rest\View(StatusCode = 200)
+     */
+	public function editProSpot(Request $request){
+		$longitude = $request->get('lng');
+		$lattitude = $request->get('lat');
+		$address = $request->get('address');
+		$name = $request->get('name');
+		$description = $request->get('description');
+		$id = $request->get('id');
+
+		$spot = $this->getSpotRepository()->find($id);
+
+		$spot->setLongitude($longitude);
+		$spot->setLatitude($lattitude);
+		$spot->setAddress($address);
+		$spot->setName($name);
+		$spot->setDescription($description);
+
+		$this->getDoctrine()->getManager()->persist($spot);
+		$this->getDoctrine()->getManager()->flush();
+
+		return $spot;
+	}
+
+	/**
+	 * @Rest\Get("/shops/{id}/get", name="company_shop")
+	 * @Rest\View(StatusCode = 200)
+	 *
+	 */
+    public function getMapSpots($id){
+        $spot = $this->getSpotRepository()->find($id);
+
+        return $spot;
+    }
+
 }
