@@ -90,7 +90,10 @@ class FriendController extends BaseController{
             $em->persist($invitation);
             $em->flush();
 
-            return $newFriend->getUsers()[0];
+            $new = $this->getUserRepository()->find($request->get('id'));
+            $userManager = $this->get('fos_user.user_manager');
+            $user = $userManager->findUserByUsername($new->getUserName());
+            return $user;
         }
     }
 

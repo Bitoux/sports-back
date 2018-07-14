@@ -33,6 +33,21 @@ class Event
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    protected $hour;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $level;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $time;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     protected $price;
 
     /**
@@ -107,7 +122,6 @@ class Event
         return $this;
     }
 
-
     /**
      * @return mixed
      */
@@ -124,6 +138,53 @@ class Event
         $this->date = $date;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getHour()
+    {
+        return $this->hour;
+    }
+
+    /**
+     * @param mixed $hour
+     */
+    public function setHour($hour)
+    {
+        $this->hour = $hour;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    /**
+     * @param mixed $level
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTime()
+    {
+        return $this->time;
+    }
+
+    /**
+     * @param mixed $time
+     */
+    public function setTime($time)
+    {
+        $this->time = $time;
+    }
 
     /**
      * @return mixed
@@ -224,19 +285,22 @@ class Event
         $this->filters = $filters;
     }
 
-
-
-
 	/**
 	 * @param $owner
 	 * @param $date
+	 * @param $hour
+	 * @param $time
+	 * @param $level
 	 * @param $price
 	 * @param $description
 	 * @param $nb_user
 	 * @return $this
 	 */
-		public function setEvent($date, $price, $description, $nb_user){
+		public function setEvent($date, $hour, $time, $level, $price, $description, $nb_user){
 			$this->date = $date;
+			$this->hour = $hour;
+			$this->time = $time;
+			$this->level = $level;
 			$this->price = $price;
 			$this->description = $description;
 			$this->nb_user = $nb_user;

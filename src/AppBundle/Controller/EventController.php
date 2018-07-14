@@ -55,6 +55,9 @@ class EventController extends BaseController
 
 		$eventRes->setEvent(
 			$event->getDate(),
+			$event->getHour(),
+			$event->getTime(),
+			$event->getLevel(),
 			$event->getPrice(),
 			$event->getDescription(),
 			$event->getNbUser()
@@ -105,6 +108,9 @@ class EventController extends BaseController
 
 		$newEvent = new Event();
 		$newEvent->setDate($event->getDate());
+		$newEvent->setHour($event->getHour());
+		$newEvent->setTime($event->getTime());
+		$newEvent->setLevel($event->getLevel());
 		$newEvent->setPrice($event->getPrice());
 		$newEvent->setNbUser($event->getNbUser());
 		$newEvent->setDescription($event->getDescription());
