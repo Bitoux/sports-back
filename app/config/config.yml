@@ -86,6 +86,7 @@ fos_rest:
         rules:
             - { path: '^/admin', stop: true }
             - { path: '^/uploads', stop: true }
+            - { path: '^/pdf', stop: true }
             - { path: '^/', priorities: ['json'], fallback_format: 'json' }
     exception:
         enabled: true

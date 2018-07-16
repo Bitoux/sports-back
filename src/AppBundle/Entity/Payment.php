@@ -54,6 +54,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
      private $returnUrl;
 
      /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $bill;
+
+     /**
       * Many Payments have One Company.
       * @ORM\ManyToOne(targetEntity="Company", inversedBy="payments")
       * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
@@ -131,6 +136,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
     public function setReturnUrl($returnUrl){
         $this->returnUrl = $returnUrl;
+    }
+
+    public function getBill(){
+        return $this->bill;
+    }
+
+    public function setBill($bill){
+        $this->bill = $bill;
     }
 
     public function __construct(){

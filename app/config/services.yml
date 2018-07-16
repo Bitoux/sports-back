@@ -3,6 +3,8 @@
 parameters:
     #parameter_name: value
     company_directory: '%kernel.project_dir%/web/uploads/company'
+    bill_directory: '%kernel.project_dir%/web/pdf'
+    font_directory: '%kernel.project_dir%/web/fonts'
 
 services:
     # default configuration for services in *this* file

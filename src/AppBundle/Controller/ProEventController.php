@@ -45,9 +45,7 @@ class ProEventController extends BaseController
         $lng = $request->get('lng'); 
         $date = $request->get('date'); 
         $hour = $request->get('hour'); 
-        $img = $request->files->get('img');
         $companyID = $request->get('company');
-        $changed = $request->get('changed');
         $id = $request->get('id');
 
         $proEvent = $this->getProEventRepository()->find($id);
@@ -61,16 +59,6 @@ class ProEventController extends BaseController
         $proEvent->setHour($hour);
 
         $company = $this->getCompanyRepository()->find($companyID);
-
-        if($changed){
-            $fileName = $this->generateUniqueFileName() . '.' . $img->guessExtension();
-
-            $img->move(
-                $this->getParameter('company_directory'),
-                $fileName
-            );
-            $proEvent->setPicture($fileName);
-        }
 
         $this->getDoctrine()->getManager()->persist($proEvent);
         $this->getDoctrine()->getManager()->flush();
@@ -91,7 +79,6 @@ class ProEventController extends BaseController
         $lng = $request->get('lng'); 
         $date = $request->get('date'); 
         $hour = $request->get('hour'); 
-        $img = $request->files->get('img');
         $companyID = $request->get('company');
 
 
@@ -108,16 +95,6 @@ class ProEventController extends BaseController
         $company = $this->getCompanyRepository()->find($companyID);
 
         $proEvent->setCompany($company);
-
-
-        $fileName = $this->generateUniqueFileName() . '.' . $img->guessExtension();
-
-        $img->move(
-            $this->getParameter('company_directory'),
-            $fileName
-        );
-
-        $proEvent->setPicture($fileName);
 
         $this->getDoctrine()->getManager()->persist($proEvent);
         $this->getDoctrine()->getManager()->flush();

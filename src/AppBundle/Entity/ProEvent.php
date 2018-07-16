@@ -31,12 +31,6 @@ class ProEvent
     private $description;
 
     /**
-     * @ORM\Column(type="string")
-     * @Assert\File(mimeTypes={ "image/png", "image/gif", "image/jpeg", "image/bmp", "image/webp" })
-     */
-    private $picture;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $address;
@@ -130,14 +124,6 @@ class ProEvent
 
     public function setHour($hour){
         $this->hour = $hour;
-    }
-
-    public function getPicture(){
-        return $this->picture;
-    }
-
-    public function setPicture($picture){
-        $this->picture = $picture;
     }
 
     public function getCompany(){

@@ -147,6 +147,8 @@ class UserController extends BaseController
         $country = $request->get('country');
         $changed = $request->get('changed');
         $img = $request->files->get('picture');
+        $changedPin = $request->get('changedPin');
+        $pin = $request->files->get('pinMap');
 
         $user = $this->getUserRepository()->find($id);
 
@@ -156,14 +158,24 @@ class UserController extends BaseController
         $user->setCity($city);
         $user->setCountry($country);
 
-        if($changed){
-            $fileName = $this->generateUniqueFileName() . '.' . $img->guessExtension();
+        if($changed == 'true'){
+            $fileName = $user->getUsername() . '-profil.' . $img->guessExtension();
 
             $img->move(
                 $this->getParameter('company_directory'),
                 $fileName
             );
             $user->setPicture($fileName);
+        }
+
+        if($changedPin == 'true'){
+            $fileName = $user->getUsername() . '-pin.' . $pin->guessExtension();
+
+            $pin->move(
+                $this->getParameter('company_directory'),
+                $fileName
+            );
+            $user->setPinMap($fileName);
         }
 
         $this->getDoctrine()->getManager()->persist($user);
