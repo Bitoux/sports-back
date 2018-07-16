@@ -158,7 +158,7 @@ class UserController extends BaseController
         $user->setCity($city);
         $user->setCountry($country);
 
-        if($changed){
+        if($changed == 'true'){
             $fileName = $user->getUsername() . '-profil.' . $img->guessExtension();
 
             $img->move(
@@ -168,7 +168,7 @@ class UserController extends BaseController
             $user->setPicture($fileName);
         }
 
-        if($changedPin){
+        if($changedPin == 'true'){
             $fileName = $user->getUsername() . '-pin.' . $pin->guessExtension();
 
             $pin->move(
