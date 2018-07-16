@@ -134,6 +134,44 @@ class UserController extends BaseController
     }
 
     /**
+	 * @Rest\Post("/user/edit/picture", name="user_edit_data")
+	 * @Rest\View(StatusCode = 200)
+	 */
+    public function editUserWithPicture(Request $request){
+        $id = $request->get('id');
+        $username = $request->get('username');
+        $email = $request->get('email');
+        $address = $request->get('address');
+        $city = $request->get('city');
+        $country = $request->get('country');
+        $firstName = $request->get('first_name');
+        $lastName = $request->get('last_name');
+        $img = $request->files->get('picture');
+
+        $user = $this->getUserRepository()->find($id);
+
+        $user->setUserName($username);
+        $user->setEmail($email);
+        $user->setAdress($address);
+        $user->setCity($city);
+        $user->setCountry($country);
+        $user->setLastName($lastName);
+
+        $fileName = $user->getUsername() . '-profil.' . $img->guessExtension();
+
+        $img->move(
+            $this->getParameter('company_directory'),
+            $fileName
+        );
+        $user->setPicture($fileName);
+
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $user;
+    }
+
+    /**
 	 * @Rest\Post("/user/company/edit", name="user_edit_company")
 	 * @Rest\View(StatusCode = 200)
 	 *
@@ -373,34 +411,27 @@ class UserController extends BaseController
      * @Rest\Post("/users/edit/image", name="edit_image")
      * @Rest\View(StatusCode = 200)
      */
-    public function editImage(Request $request, ConstraintViolationList $violations)
+    public function editImage(Request $request)
     {
 
-        if (count($violations)) {
-            $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
-            foreach ($violations as $violation) {
-                $message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
-            }
-            throw new ResourceValidationException($message);
-        }
-
-        return "OK";
-        $userManager = $this->get('fos_user.user_manager');
-        $user = $userManager->findUserBy(array('id'=>$request->get('id')));
+        $img = $request->files->get('file');
+        $id = preg_replace('/\\.[^.\\s]{3,4}$/', '', $img->getClientOriginalName());
         
+        $user = $this->getUserRepository()->find($id);
+        
+        $fileName = $user->getUsername() . '-profil.' . $img->guessExtension();
+
+        $img->move(
+            $this->getParameter('company_directory'),
+            $fileName
+        );
+        $user->setPicture($fileName);
+
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
+
         return $user;
-
-        $imgBase64 = $request->get('img');
-
-        $data = str_replace('data:image/*;charset=utf-8;base64,', '', $imgBase64);
-        $data = str_replace(' ', '+', $data);
-
-        $data = base64_decode($data);
-        $image = imagecreatefromstring($data);
-        $filename = __DIR__ . '../../../web/uploads/user-' . $user->getId() . '.png';
-        $saveImage = imagejpeg($image, $filename);
-
-        return 'OK';
+        
     }
 
     // SEND EMAIL ON REGISTER
