@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Repository\ProEventRepository;
 use AppBundle\Entity\ProEvent;
 use AppBundle\Entity\Company;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -29,8 +30,6 @@ class ProEventController extends BaseController
         }else{
             return "KO";
         }
-		
-
     }
     
     /**
@@ -66,6 +65,38 @@ class ProEventController extends BaseController
         return $company->getUser();
 
     }
+
+    /**
+     * @Rest\Get("/proevents/get/all", name="all_proevent")
+     * @Rest\View(StatusCode = 200)
+     */
+    public function getAllProEvent()
+    {
+        $proEvents = $this->getDoctrine()->getRepository(ProEvent::class)->getNextProEvents();
+
+        $returnedProEvents = array();
+        foreach($proEvents as $proEvent){
+            $user = $this->getUserRepository()->findOneBy(
+                ['company' => $proEvent['company']['id']]
+            );
+            $returnedProEvent = [
+                'name' => $proEvent['name'],
+                'description' => $proEvent['description'],
+                'address' => $proEvent['address'],
+                'latitude' => $proEvent['latitude'],
+                'longitude' => $proEvent['longitude'],
+                'date' => $proEvent['date'],
+                'hour' => $proEvent['hour'],
+                'id' => $proEvent['id'],
+                'pin' => $user->getPinMap()
+            ];
+            array_push($returnedProEvents, $returnedProEvent);
+        }
+
+
+        return $returnedProEvents;
+    }
+
 
     /**
      * @Rest\Post("/proevents/create", name="create_proevent")

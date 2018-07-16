@@ -43,6 +43,12 @@ class PaymentController extends BaseController
 
         $payment->setCompany($company);
 
+        $lastPay = date("Y-m-d");
+        $lastPay = strtotime(date("Y-m-d", strtotime($lastPay)) . " +1 month");
+        $lastPay = date("Y-m-d",$lastPay);
+
+        $company->setLastPay($lastPay);
+
         // BUILD PDF WITH MPDF SET FILENAME
         $payment->setBill($this->buildPDF($payment, $company->getUser()->getUsername()));
 

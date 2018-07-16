@@ -135,6 +135,7 @@ class SpotController extends BaseController
 		$description = $request->get('description');
 		$isPro = $request->get('isPro');
 		$idMap = $request->get('idMap');
+		$companyID = $request->get('company');
 
 		$spot = new Spot();
 
@@ -144,6 +145,10 @@ class SpotController extends BaseController
 		$spot->setName($name);
 		$spot->setDescription($description);
 		$spot->setIsPro($isPro);
+
+		$company = $this->getCompanyRepository()->find($companyID);
+
+		$spot->setCompany($company);
 
 		$map = $this->getMapRepository()->find($idMap);
 		$filter = $this->getFilterRepository()->find(4);
@@ -193,6 +198,35 @@ class SpotController extends BaseController
         $spot = $this->getSpotRepository()->find($id);
 
         return $spot;
+	}
+	
+	/**
+     * @Rest\Get("/spot/pro/get/all", name="all_shops")
+     * @Rest\View(StatusCode = 200)
+     */
+    public function getAllShops()
+    {
+        $shops = $this->getDoctrine()->getRepository(Spot::class)->getShopsSpot();
+
+		$returnedShops = array();
+		foreach($shops as $shop){
+			$user = $this->getUserRepository()->findOneBy(
+				['company' => $shop['company']['id']]
+			);
+			$returnedShop = [
+				'name' => $shop['name'],
+				'description' => $shop['description'],
+				'latitude' => $shop['latitude'],
+				'longitude' => $shop['longitude'],
+				'address' => $shop['address'],
+				'id' => $shop['id'],
+				'pin' => $user->getPinMap()
+			];
+			array_push($returnedShops, $returnedShop);
+		}
+
+
+        return $returnedShops;
     }
 
 }

@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
      private $user;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $lastPay;
 
@@ -42,6 +42,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
      * @ORM\OneToMany(targetEntity="ProEvent", mappedBy="company")
      */
     private $proEvents;
+
+    /**
+     * One Company has Many Spot.
+     * @ORM\OneToMany(targetEntity="Spot", mappedBy="company")
+     */
+    private $shops;
 
     /**
      * @return mixed
@@ -98,6 +104,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
     public function addProEvent($proEvent){
         $this->proEvents[] = $proEvent;
+        return $this;
+    }
+
+    public function getShops(){
+        return $this->shops;
+    }
+
+    public function setShops($shops){
+        $this->shops = $shops;
+    }
+
+    public function addShop($shop){
+        $this->shops[] = $shop;
         return $this;
     }
 

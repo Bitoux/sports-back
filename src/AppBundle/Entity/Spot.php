@@ -7,8 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 
 /**
- * @ORM\Entity
-
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SpotRepository")
  */
 class Spot
 {
@@ -75,6 +74,13 @@ class Spot
 		 *	 })
      */
     protected $events;
+
+    /**
+      * Many Payments have One Company.
+      * @ORM\ManyToOne(targetEntity="Company", inversedBy="shops")
+      * @ORM\JoinColumn(name="company_id", referencedColumnName="id")
+      */
+      private $company;
 
     /**
      * @return mixed
@@ -247,6 +253,15 @@ class Spot
 
     public function setIsPro($isPro){
         $this->isPro = $isPro;
+    }
+
+    public function getCompany(){
+        return $this->company;
+    }
+
+    public function setCompany($company){
+        $company = $company->addShop($this);
+        $this->company = $company;
     }
 
     /**
