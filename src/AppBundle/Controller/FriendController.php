@@ -26,21 +26,71 @@ class FriendController extends BaseController{
 
         $invitation = $this->getInvitationRepository()->find($invitationId);
 
-        $friend = $invitation->getFriend();
+        $frien = $invitation->getFriend();
+        $friend = $this->getFriendRepository()->find($frien->getId());
 
         if($accept){
-            $friend->setStatus('accept');
-            $this->getDoctrine()->getManager()->remove($invitation);
-            $this->getDoctrine()->getManager()->persist($friend);
+            if($friend) {
+                $friend->setStatus('accept');
+                $this->getDoctrine()->getManager()->remove($invitation);
+                $this->getDoctrine()->getManager()->persist($friend);
+            } else {
+                $frien->setStatus('accept');
+                $this->getDoctrine()->getManager()->remove($invitation);
+                $this->getDoctrine()->getManager()->persist($frien);
+            }
+
         }else{
+            $frien->setStatus('deleted');
             $this->getDoctrine()->getManager()->remove($invitation);
-            $this->getDoctrine()->getManager()->remove($friend);
+            $this->getDoctrine()->getManager()->persist($frien);
         }
+
+
 
         
         $this->getDoctrine()->getManager()->flush();
         
         return "OK";
+    }
+
+    /**
+     * @Rest\Post("/friends/remove", name="remove_friend")
+     * @Rest\View(StatusCode = 200)
+     */
+    public function removeFriend(Request $request){
+        $friendId = $request->get('id');
+        $friend = $this->getFriendRepository()->find($friendId);
+        $friend->setStatus('deleted');
+        $this->getDoctrine()->getManager()->persist($friend);
+        $this->getDoctrine()->getManager()->flush();
+
+        return "OK";
+    }
+
+    /**
+     * @Rest\Post("/friends/update", name="update_friend")
+     * @Rest\View(StatusCode = 200)
+     */
+    public function updateFriend(Request $request){
+        $userManager = $this->get('fos_user.user_manager');
+        $friendId = $request->get('id');
+        $friend = $this->getFriendRepository()->find($friendId);
+        $friend->setStatus('pending');
+        $this->getDoctrine()->getManager()->persist($friend);
+
+        $added = $userManager->findUserByUsername($request->get('username'));
+        $invitation = new Invitation();
+        $invitation->setFriend($friend);
+        $invitation->setUser($added);
+
+        $this->getDoctrine()->getManager()->persist($invitation);
+        $this->getDoctrine()->getManager()->flush();
+
+
+
+        $usr = $userManager->findUserByUsername($added->getUserName());
+        return $usr;
     }
 
     /**
