@@ -241,7 +241,7 @@ class EventController extends BaseController
         $newEvent->setOwner($ownerRes);
 
 		$spotRes = $this->getSpotRepository()->find($event->getSpot()->getId());
-		$spotRes->addEvent($newEvent);
+		$newEvent->setSpot($spotRes);
 
         $users = array();
 
