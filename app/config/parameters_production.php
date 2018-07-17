@@ -9,7 +9,7 @@
     $container->setParameter('database_password', $db['pass']); 
     $container->setParameter('secret', getenv('SECRET')); 
     $container->setParameter('locale', 'en'); 
-    $container->setParameter('mailer_transport', null); 
-    $container->setParameter('mailer_host', null); 
-    $container->setParameter('mailer_user', null); 
-    $container->setParameter('mailer_password', null);
+    $container->setParameter('mailer_transport', 'gmail'); 
+    $container->setParameter('mailer_host', 'smtp.gmail.com'); 
+    $container->setParameter('mailer_user', 'sportsesgi@gmail.com'); 
+    $container->setParameter('mailer_password', 'Sportspass!');
