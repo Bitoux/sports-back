@@ -408,6 +408,21 @@ class UserController extends BaseController
     }
 
     /**
+     * @Rest\Get("/users/{id}/payment", name="update_payment")
+     * @Rest\View(StatusCode = 200)
+     */
+    public function getAllProEvent($id)
+    {
+        $user = $this->getUserRepository()->find($id);
+        $user->setLastPaymentPrenium(date('Y-m-d'));
+
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $user;
+    }
+
+    /**
      * @Rest\Post("/users/edit/image", name="edit_image")
      * @Rest\View(StatusCode = 200)
      */

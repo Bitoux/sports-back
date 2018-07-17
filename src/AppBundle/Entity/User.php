@@ -106,6 +106,12 @@ class User extends BaseUser
     protected $country;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"user"})
+     */
+    protected $lastPaymentPrenium;
+
+    /**
      * @ORM\Column(type="date", length=255, nullable=true)
      * @Groups({"user"})
      */
@@ -501,6 +507,14 @@ class User extends BaseUser
 
     public function setPinMap($pinMap){
         $this->pinMap = $pinMap;
+    }
+
+    public function getLastPaymentPrenium(){
+        return $this->lastPaymentPrenium;
+    }
+    
+    public function setLastPaymentPrenium($lastPaymentPrenium){
+        $this->lastPaymentPrenium = $lastPaymentPrenium;
     }
 
 

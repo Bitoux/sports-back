@@ -32,10 +32,7 @@ class ProEventController extends BaseController
         }
     }
     
-    /**
-     * @Rest\Post("/proevents/edit", name="edit_proevent")
-     * @Rest\View(StatusCode = 200)
-     */
+    
     public function editProEvent(Request $request){
         $name = $request->get('name'); 
         $description = $request->get('description'); 
@@ -66,42 +63,7 @@ class ProEventController extends BaseController
 
     }
 
-    /**
-     * @Rest\Get("/proevents/get/all", name="all_proevent")
-     * @Rest\View(StatusCode = 200)
-     */
-    public function getAllProEvent()
-    {
-        $proEvents = $this->getDoctrine()->getRepository(ProEvent::class)->getNextProEvents();
 
-        $returnedProEvents = array();
-        foreach($proEvents as $proEvent){
-            $user = $this->getUserRepository()->findOneBy(
-                ['company' => $proEvent['company']['id']]
-            );
-            $returnedProEvent = [
-                'name' => $proEvent['name'],
-                'description' => $proEvent['description'],
-                'address' => $proEvent['address'],
-                'latitude' => $proEvent['latitude'],
-                'longitude' => $proEvent['longitude'],
-                'date' => $proEvent['date'],
-                'hour' => $proEvent['hour'],
-                'id' => $proEvent['id'],
-                'pin' => $user->getPinMap()
-            ];
-            array_push($returnedProEvents, $returnedProEvent);
-        }
-
-
-        return $returnedProEvents;
-    }
-
-
-    /**
-     * @Rest\Post("/proevents/create", name="create_proevent")
-     * @Rest\View(StatusCode = 200)
-     */
     public function createProEvent(Request $request){
         $name = $request->get('name'); 
         $description = $request->get('description'); 

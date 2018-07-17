@@ -220,7 +220,7 @@ class Spot
 	 */
     public function addEvent($event){
         $this->events[] = $event;
-        $event->setSpot($this);
+        return $this;
     }
 
     /**

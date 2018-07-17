@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
  */
 class Event
 {
@@ -232,6 +232,7 @@ class Event
 	 * @return $this
 	 */
 	public function setSpot(Spot $spot){
+        $spot = $spot->addEvent($this);
     	$this->spot = $spot;
 
     	return $this;
