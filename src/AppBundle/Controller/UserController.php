@@ -414,7 +414,9 @@ class UserController extends BaseController
     public function getAllProEvent($id)
     {
         $user = $this->getUserRepository()->find($id);
-        $user->setLastPaymentPrenium(date('Y-m-d'));
+        $today = strtotime(date('Y-m-d'));
+        $final = date("Y-m-d", strtotime("+1 month", $today));
+        $user->setLastPaymentPrenium($final);
 
         $this->getDoctrine()->getManager()->persist($user);
         $this->getDoctrine()->getManager()->flush();
