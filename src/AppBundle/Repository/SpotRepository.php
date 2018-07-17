@@ -16,6 +16,16 @@ class SpotRepository extends EntityRepository{
 
         return $query->getQuery()->getArrayResult();
     }
+
+    public function getUserShops($id){
+        $query -> $this->createQueryBuilder('s')
+                        ->addSelect('c')
+                        ->leftJoin('s.company', 'c')
+                        ->where('c.id == :id')
+                        ->setParameter('id', $id);
+        
+        return $query->getQuery()->getArrayResult();
+    }
     
 
 }

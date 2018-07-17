@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Map;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Spot;
 use AppBundle\Entity\Filter;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Request\ParamFetcher;
@@ -72,9 +73,9 @@ class MapController extends BaseController
 	 *
 	 */
     public function getMapSpots($id){
-        $map = $this->getMapRepository()->find($id);
+        $shops = $this->getDoctrine()->getRepository(Spot::class)->getShopsSpot($id);
 
-        return $map->getSpots();
+        return $shops;
     }
 
 }
