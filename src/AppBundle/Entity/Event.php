@@ -270,6 +270,11 @@ class Event
         $this->users = $users;
     }
 
+    public function addUser($user){
+        $this->users[] = $user;
+        return $this;
+    }
+
     /**
      * @return mixed
      */

@@ -169,6 +169,11 @@ class EventController extends BaseController
 		$event->setHour($request->get('hour'));
 		$event->setDescription($request->get('description'));
 		$event->setFilters($filters);
+		$event->addUser($user);
+		$event->setNbUser(200);
+		$event->setPrice('10');
+		$event->setTime('1');
+		$event->setLevel('0');
 		
 		// SET SPOT
 		$spot = new Spot();
