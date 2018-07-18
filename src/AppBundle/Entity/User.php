@@ -68,7 +68,7 @@ class User extends BaseUser
      * @Assert\File(mimeTypes={ "image/png", "image/gif", "image/jpeg", "image/bmp", "image/webp" })
      * @Groups({"user"})
      */
-    protected $picture;
+    protected $picture = 'default-picture.jpg';
 
     /**
      * @ORM\Column(type="string", nullable=true)

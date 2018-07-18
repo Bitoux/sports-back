@@ -132,6 +132,10 @@ class EventController extends BaseController
 		$event->setHour($request->get('hour'));
 		$event->setDescription($request->get('description'));
 		$event->setFilters($filters);
+		$event->setNbUser($request->get('nb_user'));
+		$event->setPrice($request->get('price'));
+		$event->setTime($request->get('time'));
+		$event->setLevel($request->get('level'));
 
 		$spot = $this->getSpotRepository()->find($request->get('spotID'));
 		$spot->setLongitude($request->get('longitude'));
@@ -170,10 +174,10 @@ class EventController extends BaseController
 		$event->setDescription($request->get('description'));
 		$event->setFilters($filters);
 		$event->addUser($user);
-		$event->setNbUser(200);
-		$event->setPrice('10');
-		$event->setTime('1');
-		$event->setLevel('0');
+		$event->setNbUser($request->get('nb_user'));
+		$event->setPrice($request->get('price'));
+		$event->setTime($request->get('time'));
+		$event->setLevel($request->get('level'));
 		
 		// SET SPOT
 		$spot = new Spot();

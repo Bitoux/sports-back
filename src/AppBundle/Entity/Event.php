@@ -312,7 +312,11 @@ class Event
 			$this->nb_user = $nb_user;
 
 			return $this;
-		}
+        }
+        
+        public function __construct(){
+            $this->filters = new \Doctrine\Common\Collections\ArrayCollection();
+        }
 
 
 
