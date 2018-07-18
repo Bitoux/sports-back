@@ -40,26 +40,26 @@ class LoadPostData implements FixtureInterface, ContainerAwareInterface
         $footFilter->setDesignation('Football');
         $rugbyFilter = new Filter();
         $rugbyFilter->setDesignation('Rugby');
+        $tennisFilter = new Filter();
+        $tennisFilter->setDesignation('Tennis');
+        $boxeFilter = new Filter();
+        $boxeFilter->setDesignation('Boxe');
+        $volleyFilter = new Filter();
+        $volleyFilter->setDesignation('Volley-ball');
+        $runningFilter = new Filter();
+        $runningFilter->setDesignation('Running');
+        $workoutFilter = new Filter();
+        $workoutFilter->setDesignation('Workout');
+        $racingFilter = new Filter();
+        $racingFilter->setDesignation('Racing');
         $shopFilter = new Filter();
         $shopFilter->setDesignation('Shops');
         $fakeFilters = array($basketFilter, $footFilter);
 
-        $fakeGrade = new Grade();
-        $fakeGrade->setGrade(1);
-        $fakeGrade2 = new Grade();
-        $fakeGrade2->setGrade(2);
-        $fakeGrade3 = new Grade();
-        $fakeGrade3->setGrade(3);
-        $fakeGrade4 = new Grade();
-        $fakeGrade4->setGrade(4);
-        $fakeGrade5 = new Grade();
-        $fakeGrade5->setGrade(5);
-        $fakeGrades = array($fakeGrade5, $fakeGrade3, $fakeGrade4);
-
         $fakeUser = $managerFos->createUser();
         $fakeUser->setFirstName('Jean');
         $fakeUser->setLastName('Moulin');
-        $fakeUser->setUserName('JMoulin');
+        $fakeUser->setUserName('JMoulin_37');
         $fakeUser->setPassword('$2y$13$JOvZdRIR9vAjfcRCD.ReLOnqWE9EG9kVcvQUesN2BTRZVg.hikIba');
         $fakeUser->setEmail('yannmiloux@gmail.com');
         $fakeUser->setAdress('9 avenue de la République');
@@ -70,7 +70,6 @@ class LoadPostData implements FixtureInterface, ContainerAwareInterface
 
         $fakeMap = new Map();
         $fakeMap->setName("map 1");
-        $fakeMaps = array($fakeMap);
 
         $fakeSpot = new Spot();
         $fakeSpot->setLongitude('2.3705932');
@@ -80,16 +79,15 @@ class LoadPostData implements FixtureInterface, ContainerAwareInterface
         $fakeSpots = array($fakeSpot);
 
 
-
         $manager->persist($basketFilter);
         $manager->persist($footFilter);
-        $manager->persist($rugbyFilter);
+        $manager->persist($tennisFilter);
+        $manager->persist($boxeFilter);
+        $manager->persist($runningFilter);
+        $manager->persist($volleyFilter);
+        $manager->persist($workoutFilter);
+        $manager->persist($racingFilter);
         $manager->persist($shopFilter);
-        $manager->persist($fakeGrade);
-        $manager->persist($fakeGrade2);
-        $manager->persist($fakeGrade3);
-        $manager->persist($fakeGrade4);
-        $manager->persist($fakeGrade5);
         $managerFos->updateUser($fakeUser);
         $manager->persist($fakeSpot);
         $manager->persist($fakeMap);
@@ -97,13 +95,9 @@ class LoadPostData implements FixtureInterface, ContainerAwareInterface
         //Création des relations
         $fakeUser->setMap($fakeMap);
         $fakeUser->setFilters($fakeFilters);
-        $fakeUser->setGrades($fakeGrades);
 
         $fakeMap->setSpots($fakeSpots);
-
         $fakeSpot->setFilters($fakeFilters);
-        $fakeSpot->setGrades($fakeGrades);
-
 
         $manager->flush();
     }
